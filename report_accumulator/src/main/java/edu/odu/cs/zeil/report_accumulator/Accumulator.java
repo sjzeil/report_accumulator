@@ -3,8 +3,16 @@
  */
 package edu.odu.cs.zeil.report_accumulator;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
+import java.util.ArrayList;
 
 /**
  * Accumulate development statistics for trend plotting.
@@ -20,6 +28,7 @@ public class Accumulator {
 	
 	private URL projectWebsite;
 	private Path[] reportDirectories;
+	private ArrayList<ReportScanner> scanners;
 	
 	/**
 	 * Create an accumulator for a given website and local report directory.
@@ -31,7 +40,9 @@ public class Accumulator {
 	public Accumulator (
 			URL projectWebsite,
 			Path[] reportDirectories) {
-		// TODO
+		this.projectWebsite = projectWebsite;
+		this.reportDirectories = reportDirectories;
+		scanners = new ArrayList<>();
 	}
 
 	
@@ -42,7 +53,7 @@ public class Accumulator {
 	 * @param reportKind a scanner for a specific type of report.
 	 */
 	public void register (ReportScanner reportKind) {
-		// TODO
+		scanners.add(reportKind);
 	}
 	
 	
@@ -58,8 +69,76 @@ public class Accumulator {
 	 * uploading is handled as part of the normal project build. 
 	 */
 	public void accumulateStatistics () {
-		// TODO
+		for (Path reportDir: reportDirectories) {
+			for (File dir: reportDir.toFile().listFiles()) {
+				if (dir.isDirectory()) {
+					for (ReportScanner scanner: scanners) {
+						scanForStatistics (dir, scanner);
+					}
+				}
+			}
+		}
 	}
+
+
+	/**
+	 * Attempt to apply a single report scanner to a directory.
+	 * @param dir  possible report directory
+	 * @param scanner a scanner for a specific type of report
+	 */
+	private void scanForStatistics(File dir, ReportScanner scanner) {
+		scanner.setDirectory(dir.toPath());
+		if (scanner.containsReport()) {
+			double[] pointStatistics = scanner.extractStatistics();
+			if (pointStatistics != null && pointStatistics.length > 0) {
+				String reportName = dir.getName() + ".csv";
+				String reportDirName = dir.getParentFile().getName();
+				String existingContent;
+				int lineCount = 0;
+				try {
+					URL existingReportURL = new URL(projectWebsite.toString() + "/" + reportName);
+					try (BufferedReader in = new BufferedReader(new InputStreamReader(existingReportURL.openStream()))) {
+						StringBuffer buf = new StringBuffer();
+						String line;
+						while ((line = in.readLine()) != null) {
+							buf.append(line);
+							buf.append("\n");
+							++lineCount;
+						}
+						existingContent = buf.toString();
+					} catch (IOException e) {
+						existingContent = "";
+					}
+				} catch (MalformedURLException e) {
+					existingContent = "";
+				}
+				
+				try (BufferedWriter out = new BufferedWriter(new FileWriter(new File(dir.getParentFile(), reportName)))) {
+					if (existingContent.length() > 0) {
+						out.write(existingContent);
+					} else {
+						out.write(dir.getName());
+						for (String s: scanner.getDescriptors()) {
+							out.write(",");
+							out.write(s);
+						}
+						out.newLine();
+					}
+					out.write(new Integer(lineCount+1).toString());
+					for (double stat: pointStatistics) {
+						out.write(",");
+						out.write(new Double(stat).toString());
+					}
+					out.newLine();
+				} catch (IOException e) {
+					System.err.println("Problem writing out statistics to " + reportName + ": " + e);
+					e.printStackTrace();
+				}
+			}
+		}
+		
+	}
+
 
 
 	/**

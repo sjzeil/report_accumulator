@@ -108,7 +108,7 @@ public class TestAccumulator {
 		testArea.toFile().mkdirs();
 		Path csvDir1 = testArea.resolve(reportDir1);
 		csvDir1.toFile().mkdir();
-		Path csvDir2 = testArea.resolve(reportDir1);
+		Path csvDir2 = testArea.resolve(reportDir2);
 		csvDir2.toFile().mkdir();
 	}
 
