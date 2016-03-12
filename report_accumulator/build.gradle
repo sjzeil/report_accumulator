@@ -1,0 +1,81 @@
+/*
+ * Report Accumulator build file
+ * Steven J Zeil, Old Dominion Univ.
+ */
+
+// Apply the java plugin to add support for Java
+apply plugin: 'java'
+apply plugin: 'ivy-publish'
+apply plugin: 'project-report'
+apply plugin: 'checkstyle'
+apply plugin: 'findbugs'
+apply plugin: 'pmd'
+apply plugin: 'jacoco'
+apply plugin: 'build-dashboard'
+
+
+
+// In this section you declare where to find the dependencies of your project
+repositories {
+    // Use 'jcenter' for resolving your dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+    jcenter()
+}
+
+// In this section you declare the dependencies for your production and test code
+dependencies {
+    testCompile 'junit:junit:4.12'
+}
+
+publishing {
+    publications {
+        ivyJava(IvyPublication) {
+            organisation 'edu.odu.cs.zeil'
+            module 'reportAccumulator'
+            revision '1.0-SNAPSHOT'
+            descriptor.status = 'milestone'
+            descriptor.branch = 'master'
+
+            from components.java
+        }
+    }
+    repositories {
+        ivy {
+            name 'ivyRepo'
+            url 'sftp://linux.cs.odu.edu:22/home/zeil/secure_html/ivyrepo'
+            // Readable via https://www.cs.odu.edu/~zeil/ivyrepo    
+            credentials {
+                // Credentials are loaded from ~/.gradle/gradle.properties
+                username "$ivyRepoUser"
+                password "$ivyRepoPass"
+            }
+        }
+    }           
+}
+
+checkstyle {
+    ignoreFailures = true
+    showViolations = false    
+}
+
+findbugsMain {
+    ignoreFailures = true
+    effort = 'max'
+    reportLevel = 'high'
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+}
+
+pmd {
+    ignoreFailures = true
+    consoleOutput = false
+}
+
+checkstyleTest.enabled = false
+findbugsTest.enabled = false
+pmdTest.enabled = false
+check.dependsOn jacocoTestReport
+check.dependsOn htmlDependencyReport
+
