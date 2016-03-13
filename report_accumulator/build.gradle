@@ -78,6 +78,7 @@ pmd {
     consoleOutput = false
 }
 
+test.ignoreFailures=true
 checkstyleTest.enabled = false
 findbugsTest.enabled = false
 pmdTest.enabled = false

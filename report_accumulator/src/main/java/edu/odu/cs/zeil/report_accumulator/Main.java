@@ -34,6 +34,7 @@ public class Main {
 		Accumulator accum = new Accumulator (website, dirs.toArray(new Path[0]));
 		
 		// accum.register(...);
+		accum.register(new JUnitScanner());
 		accum.register(new CheckstyleScanner());
 		
 		accum.accumulateStatistics();
