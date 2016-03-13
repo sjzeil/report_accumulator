@@ -4,12 +4,12 @@
 package edu.odu.cs.zeil.report_accumulator;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -43,24 +43,16 @@ public class CheckstyleScanner implements ReportScanner {
 	 */
 	@Override
 	public boolean containsReport() {
-		Path xmlPath = reportDirectory.resolve("main.xml");
-		if (xmlPath.toFile().exists()) {
-			if (readDOM(xmlPath)) {
-				Element root = doc.getDocumentElement();
-				if (root.getTagName().equals("checkstyle")) {
-					return true;
-				}
-			}
-		}
-		return false;
+		double [] results = extractStatistics();
+		return results != null && results.length > 0;
 	}
 
-	private boolean readDOM(Path xmlPath) {
+	private boolean readDOM(File xmlFile) {
 		if (doc == null) {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			try {
 				DocumentBuilder builder = factory.newDocumentBuilder();
-				try (InputStream in = new BufferedInputStream(new FileInputStream(xmlPath.toFile()))) {
+				try (InputStream in = new BufferedInputStream(new FileInputStream(xmlFile))) {
 					doc = builder.parse (in);
 					return (doc != null);
 				} catch (FileNotFoundException e) {
@@ -85,9 +77,24 @@ public class CheckstyleScanner implements ReportScanner {
 	 */
 	@Override
 	public double[] extractStatistics() {
-		Path xmlPath = reportDirectory.resolve("main.xml");
-		if (xmlPath.toFile().exists()) {
-			if (readDOM(xmlPath)) {
+		if (reportDirectory.toFile().exists()) {
+			for (File xmlFile: reportDirectory.toFile().listFiles()) {
+				if (xmlFile.getName().endsWith(".xml")) {
+					double[] result = extractStatistics(xmlFile);
+					if (result != null && result.length > 0) {
+						return result;
+					}
+				}
+			}
+		}
+		return new double[0];
+	}
+
+
+	
+	private double[] extractStatistics(File xmlFile) {
+		if (xmlFile.exists()) {
+			if (readDOM(xmlFile)) {
 				Element root = doc.getDocumentElement();
 				if (root.getTagName().equals("checkstyle")) {
 					NodeList details = root.getElementsByTagName("error");
@@ -98,9 +105,10 @@ public class CheckstyleScanner implements ReportScanner {
 				}
 			}
 		}
-		return new double[0];
+		return null;
 	}
 
+	
 	/* (non-Javadoc)
 	 * @see edu.odu.cs.zeil.report_accumulator.ReportScanner#getDescriptors()
 	 */

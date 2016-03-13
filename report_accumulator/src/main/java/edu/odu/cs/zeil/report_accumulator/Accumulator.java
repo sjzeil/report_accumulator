@@ -92,7 +92,6 @@ public class Accumulator {
 			double[] pointStatistics = scanner.extractStatistics();
 			if (pointStatistics != null && pointStatistics.length > 0) {
 				String reportName = dir.getName() + ".csv";
-				String reportDirName = dir.getParentFile().getName();
 				String existingContent;
 				int lineCount = 0;
 				try {
