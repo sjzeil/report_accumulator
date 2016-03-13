@@ -26,8 +26,10 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.EntityResolver;
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 /**
  * Report scanner for JUnit test reports.
@@ -62,39 +64,11 @@ public class JacocoBranchCoverageScanner implements ReportScanner {
 
 	private boolean readDOM(File xmlFile) {
 		if (doc == null) {
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			try {
-				factory.setValidating(false);
-				DocumentBuilder builder = factory.newDocumentBuilder();
-				builder.setEntityResolver(new EntityResolver() {
-			        @Override
-			        public InputSource resolveEntity(String publicId, String systemId)
-			                throws SAXException, IOException {
-			            if (systemId.contains(".dtd")) {
-			                return new InputSource(new StringReader(""));
-			            } else {
-			                return null;
-			            }
-			        }
-			    });
-				try (InputStream in = new BufferedInputStream(new FileInputStream(xmlFile))) {
-					doc = builder.parse (in);
-					return (doc != null);
-				} catch (FileNotFoundException e) {
-					return false;
-				} catch (IOException e) {
-					return false;
-				} catch (SAXException e) {
-					return false;
-				}
-			} catch (ParserConfigurationException e) {
-				System.err.println("Could not create an XML parser: " + e);
-				e.printStackTrace();
-			}
+			doc = new DOMParser().readDOM(xmlFile);
+			return (doc != null);
 		} else {
 			return true;
 		}
-		return false;
 	}
 
 	
@@ -114,7 +88,8 @@ public class JacocoBranchCoverageScanner implements ReportScanner {
 							BasicFileAttributes attr) {
 						if (attr.isRegularFile()) {
 							File xmlFile = path.toFile();
-							if (xmlFile.getName().endsWith(".html")) {
+							File parent = xmlFile.getParentFile();
+							if (parent.getName().equals("html") && xmlFile.getName().endsWith(".html")) {
 								double[] result = extractStatistics(xmlFile);
 								if (result != null && result.length > 0) {
 									statistics = result;
