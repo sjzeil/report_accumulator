@@ -1,0 +1,22 @@
+<FindBugsFilter>
+    <!--Omit automatically generated scanner & parser classes 
+		from analysis. -->
+	<Match>
+		<Class name="edu.odu.cs.espreadsheet.expressions.ExpressionScanner"></Class>
+	</Match>
+	<Match>
+		<Class name="edu.odu.cs.espreadsheet.expressions.parser"></Class>
+	</Match>
+	
+	<Match>
+	    <Bug pattern="CN_IDIOM_NO_SUPER_CALL"/>
+	</Match>
+
+	<!-- All bugs in test classes, except for JUnit-specific bugs -->
+	<Match>
+		<Class name="~.*\.*Test" />
+		<Not>
+			<Bug code="IJU" />
+		</Not>
+	</Match>
+</FindBugsFilter>

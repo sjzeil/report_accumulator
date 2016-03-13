@@ -8,12 +8,8 @@ build-job:
     - atria
   stage: build
   script:
-    - pwd
     - cd report-accumulator
-    - pwd
-    - ./gradlew build
-    - mkdir -p /home/zeil/public_html/gitlab/report-accumulator
-    - /bin/cp -arf build/reports /home/zeil/public_html/gitlab/report-accumulator
+    - ./gradlew build deployReports
   only:
     - master
 

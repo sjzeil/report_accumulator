@@ -13,7 +13,7 @@ apply plugin: 'pmd'
 apply plugin: 'jacoco'
 apply plugin: 'build-dashboard'
 
-
+//project.name = 'reportAccumulator'
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -31,7 +31,7 @@ publishing {
     publications {
         ivyJava(IvyPublication) {
             organisation 'edu.odu.cs.zeil'
-            module 'reportAccumulator'
+            module project.name
             revision '1.0-SNAPSHOT'
             descriptor.status = 'milestone'
             descriptor.branch = 'master'
@@ -63,7 +63,7 @@ findbugsMain {
     effort = 'max'
     reportLevel = 'high'
     reports {
-        xml.enabled = true
+        xml.enabled = false
         html.enabled = true
     }
 }
@@ -79,3 +79,25 @@ pmdTest.enabled = false
 check.dependsOn jacocoTestReport
 check.dependsOn htmlDependencyReport
 
+task copyWebPages (type: Copy) {
+    from 'src/main/html'
+    into 'build/reports'
+}
+
+task copyDocs (type: Copy) {
+    from 'build/docs'
+    into 'build/reports/docs'
+    dependsOn 'javadoc'
+}
+
+task reports (dependsOn: ['htmlDependencyReport', 'javadoc', 'check', 'copyWebPages', 'copyDocs']) {
+    description 'Generate all reports for this project'
+}
+
+
+task deployReports (type: Copy) {
+    description 'copy all reports to project web page'
+    dependsOn 'reports'
+    from 'build/reports'
+    into '/home/zeil/public_html/gitlab/' + project.name + '/reports'
+}
