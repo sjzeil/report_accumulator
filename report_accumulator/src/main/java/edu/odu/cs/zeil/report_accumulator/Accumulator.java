@@ -134,8 +134,8 @@ public class Accumulator {
 					e.printStackTrace();
 				}
 			}
+
 		}
-		
 	}
 
 

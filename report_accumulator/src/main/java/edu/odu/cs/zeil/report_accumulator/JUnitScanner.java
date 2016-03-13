@@ -9,6 +9,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.nio.file.Path;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -19,6 +20,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
@@ -56,7 +59,19 @@ public class JUnitScanner implements ReportScanner {
 		if (doc == null) {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			try {
+				factory.setValidating(false);
 				DocumentBuilder builder = factory.newDocumentBuilder();
+				builder.setEntityResolver(new EntityResolver() {
+			        @Override
+			        public InputSource resolveEntity(String publicId, String systemId)
+			                throws SAXException, IOException {
+			            if (systemId.contains(".dtd")) {
+			                return new InputSource(new StringReader(""));
+			            } else {
+			                return null;
+			            }
+			        }
+			    });
 				try (InputStream in = new BufferedInputStream(new FileInputStream(xmlFile))) {
 					doc = builder.parse (in);
 					return (doc != null);
@@ -113,6 +128,7 @@ public class JUnitScanner implements ReportScanner {
 						int numTests = -1;
 						int numFailures = -1;
 						int numIgnored = -1;
+						System.err.println("JunitScanner looking at " + allDivs.getLength() + " divs");
 						for (int i = 0; i < allDivs.getLength(); ++i) {
 							Node nd = allDivs.item(i);
 							Element div = (Element)nd;

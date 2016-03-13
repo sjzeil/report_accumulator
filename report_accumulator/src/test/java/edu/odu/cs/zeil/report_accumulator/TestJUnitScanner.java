@@ -25,6 +25,17 @@ public class TestJUnitScanner {
 	}
 
 	@Test
+	public void testFindbugs() {
+		JUnitScanner scanner = new JUnitScanner();
+		scanner.setDirectory(Paths.get("src", "test", "data", "findbugs"));
+		assertEquals (2, scanner.getDescriptors().length);
+		assertFalse (scanner.containsReport());
+		double[] stats = scanner.extractStatistics();
+		assertNotNull(stats);
+		assertEquals (0, stats.length);
+	}
+
+	@Test
 	public void testJUnit() {
 		JUnitScanner scanner = new JUnitScanner();
 		scanner.setDirectory(Paths.get("src", "test", "data", "junit"));
