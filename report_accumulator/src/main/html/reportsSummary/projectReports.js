@@ -16,7 +16,7 @@
   */
 
 	        function register1(graphName, csvURL, title, yAxisTitle) {
-	            var divName = "#" + graphName + "Graph";
+	            var divName = "#" + graphName;
 	            $(document).ready(function() {  
 			        $.get(csvURL, function(csv) {
 			             $(divName).highcharts({
@@ -67,7 +67,7 @@
   */
 
 	        function register2(graphName, csvURL, title, yAxisTitle) {
-	            var divName = "#" + graphName + "Graph";
+	            var divName = "#" + graphName;
 	            $(document).ready(function() {  
 			        $.get(csvURL, function(csv) {
 			             $(divName).highcharts({

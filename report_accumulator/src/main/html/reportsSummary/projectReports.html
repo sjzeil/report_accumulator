@@ -23,8 +23,8 @@
         </div>
 	   	<div class="reportGraphs">
             <div id="pmdGraph" class="graph">PMD</div>
-            <div id="findBugsGraph" class="graph">findBugs</div>
-            <div id="checkStyleGraph" class="graph">checkstyle</div>
+            <div id="findbugsGraph" class="graph">findBugs</div>
+            <div id="checkstyleGraph" class="graph">checkstyle</div>
         </div> 
         
         <!-- For each graph to be displayed, call register1 or register2 (depending
@@ -33,6 +33,8 @@
 	        register2("junitGraph", "../junit.csv", "JUnit Tests", "Test Cases");
 	        register1("jacocoGraph", "../jacoco.csv", "Test Coverage", "Coverage %");
 	        register1("pmdGraph", "../pmd.csv", "PMD", "Warnings");
+	        register1("checkstyleGraph", "../checkstyle.csv", "Checkstyle", "Warnings");
+	        register1("findbugsGraph", "../findbugs.csv", "FindBugs", "Warnings");
 		</script>
 
 	    <h2>Detailed Reports</h2>
