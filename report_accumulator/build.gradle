@@ -11,9 +11,8 @@ apply plugin: 'checkstyle'
 apply plugin: 'findbugs'
 apply plugin: 'pmd'
 apply plugin: 'jacoco'
-apply plugin: 'build-dashboard'
 
-//project.name = 'reportAccumulator'
+
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -66,6 +65,12 @@ findbugsMain {
         xml.enabled = false
         html.enabled = true
     }
+}
+
+tasks.withType(Checkstyle) {
+  reports {
+    html.destination rootProject.file("build/reports/checkstyle.html")
+  }
 }
 
 pmd {

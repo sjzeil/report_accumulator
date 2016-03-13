@@ -19,7 +19,7 @@ import java.util.ArrayList;
  *  
  * Scans a set of report directories to locate common testing and analysis reports, 
  * accumulating statistics where appropriate and adding those point statistics for
- * the current build to to csv files maintained on a project website.
+ * the current build to to csv files maintained on a project web site.
  * 
  * @author zeil
  *
@@ -31,11 +31,11 @@ public class Accumulator {
 	private ArrayList<ReportScanner> scanners;
 	
 	/**
-	 * Create an accumulator for a given website and local report directory.
+	 * Create an accumulator for a given web site and local report directory.
 	 *  
-	 * @param projectWebsite URL for the project website corresponding to the report directory
+	 * @param projectWebsite URL for the project web site corresponding to the report directory
 	 * @param reportDirectories a set of directories that may contain newly generated reports. Each
-	 *     report must reside in a subdirectory within one of these directories.
+	 *     report must reside in a sub-directory within one of these directories.
 	 */
 	public Accumulator (
 			URL projectWebsite,
@@ -58,13 +58,13 @@ public class Accumulator {
 	
 	
 	/**
-	 * Scan the report directories for subdirectories containing common reports
+	 * Scan the report directories for sub-directories containing common reports
 	 * If reportDir/subDir holds a report for which statistics are appropriate,
-	 * try to obtain a file projectWebSiteURL/reportDir/subDir.csv contianing prior
+	 * try to obtain a file projectWebSiteURL/reportDir/subDir.csv containing prior
 	 * stats. If none exists, create a new such file. Add current statistics to the
 	 * end of this CSV structure and save in reportDir/subDir.csv
 	 * 
-	 * The current reports and updated statistics can then be uploaded to the website,
+	 * The current reports and updated statistics can then be uploaded to the web site,
 	 * though doing so is outside the scope of this class.  It is assumed that such
 	 * uploading is handled as part of the normal project build. 
 	 */
