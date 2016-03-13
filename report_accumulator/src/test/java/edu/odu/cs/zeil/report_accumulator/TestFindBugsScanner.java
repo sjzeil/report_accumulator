@@ -48,4 +48,19 @@ public class TestFindBugsScanner {
 		assertEquals (2.0, stats[1], 0.0001);
 	}
 
+	@Test
+	public void testFindBugs2() {
+		FindBugsScanner scanner = new FindBugsScanner();
+		scanner.setDirectory(Paths.get("src", "test", "data", "findbugs2"));
+		assertEquals (2, scanner.getDescriptors().length);
+		assertTrue (scanner.containsReport());
+		double[] stats = scanner.extractStatistics();
+		assertNotNull(stats);
+		assertEquals (2, stats.length);
+		assertEquals (0.0, stats[0], 0.0001);
+		assertEquals (2.0, stats[1], 0.0001);
+	}
+
+	
+	
 }

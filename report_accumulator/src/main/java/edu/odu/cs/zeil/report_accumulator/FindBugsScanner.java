@@ -140,6 +140,8 @@ public class FindBugsScanner implements ReportScanner {
 										} catch (NumberFormatException e) {
 											numHighPriority = 0;
 										}
+									} else {
+										numHighPriority = 0;
 									}
 								}
 								if (rowHeading.equals("Medium Priority Warnings")) {
@@ -149,6 +151,8 @@ public class FindBugsScanner implements ReportScanner {
 										} catch (NumberFormatException e) {
 											numMedPriority = 0;
 										}
+									} else {
+										numMedPriority = 0;
 									}
 								}
 							}
