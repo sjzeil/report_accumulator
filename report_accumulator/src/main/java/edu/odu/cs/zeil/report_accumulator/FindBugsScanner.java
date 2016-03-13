@@ -32,7 +32,7 @@ import org.xml.sax.SAXException;
  * @author zeil
  *
  */
-public class JUnitScanner implements ReportScanner {
+public class FindBugsScanner implements ReportScanner {
 	
 	Path reportDirectory;
 	Document doc;
@@ -120,34 +120,49 @@ public class JUnitScanner implements ReportScanner {
 					try {
 						Element head = (Element) root.getElementsByTagName("head").item(0);
 						Element title = (Element) head.getElementsByTagName("title").item(0);
-						if (!title.getTextContent().contains("Test Summary")) {
+						if (!title.getTextContent().contains("FindBugs Report")) {
 							return null;
 						}
-						NodeList allDivs = doc.getElementsByTagName("div");
-						int numTests = -1;
-						int numFailures = -1;
-						int numIgnored = -1;
-						for (int i = 0; i < allDivs.getLength(); ++i) {
-							Node nd = allDivs.item(i);
-							Element div = (Element)nd;
-							if (div.getAttribute("id").equals("tests")) {
-								Element counterDiv = (Element) div.getElementsByTagName("div").item(0);
-								numTests = Integer.parseInt(counterDiv.getTextContent());
-							} else if (div.getAttribute("id").equals("failures")) {
-								Element counterDiv = (Element) div.getElementsByTagName("div").item(0);
-								numFailures = Integer.parseInt(counterDiv.getTextContent());
-							} else if (div.getAttribute("id").equals("ignored")) {
-								Element counterDiv = (Element) div.getElementsByTagName("div").item(0);
-								numIgnored = Integer.parseInt(counterDiv.getTextContent());
+						NodeList allTableRows = doc.getElementsByTagName("tr");
+						int numHighPriority = -1;
+						int numMedPriority = -1;
+						for (int i = 0; i < allTableRows.getLength(); ++i) {
+							Node nd = allTableRows.item(i);
+							Element tr = (Element)nd;
+							NodeList cols = tr.getElementsByTagName("td");
+							if (cols.getLength() == 3) {
+								String rowHeading = cols.item(0).getTextContent();
+								String value = cols.item(1).getTextContent();
+								if (rowHeading.equals("High Priority Warnings")) {
+									if (value.length() > 0) {
+										try {
+											numHighPriority = Integer.parseInt(value);
+										} catch (NumberFormatException e) {
+											numHighPriority = 0;
+										}
+									}
+								}
+								if (rowHeading.equals("Medium Priority Warnings")) {
+									if (value.length() > 0) {
+										try {
+											numMedPriority = Integer.parseInt(value);
+										} catch (NumberFormatException e) {
+											numMedPriority = 0;
+										}
+									}
+								}
+							}
+							if (numHighPriority >= 0 && numMedPriority >= 0) {
+								break;
 							}
 						}
-						if (numTests < 0 || numFailures < 0 || numIgnored < 0) {
+						if (numHighPriority < 0 || numMedPriority < 0) {
 							return null;
 						}
 						
 						double[] results = new double[2];
-						results[1] = numFailures;
-						results[0] = numTests - numFailures - numIgnored;
+						results[1] = numHighPriority;
+						results[0] = numMedPriority;
 						return results;
 					} catch (Exception e) {
 						return null;
@@ -165,8 +180,8 @@ public class JUnitScanner implements ReportScanner {
 	@Override
 	public String[] getDescriptors() {
 		String[] result = new String[2];
-		result[1] = "Failed";
-		result[0] = "Passed";
+		result[1] = "High Priority";
+		result[0] = "Medium Priority";
 		return result;
 	}
 

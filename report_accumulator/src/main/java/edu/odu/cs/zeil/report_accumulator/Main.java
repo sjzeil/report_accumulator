@@ -36,6 +36,7 @@ public class Main {
 		// accum.register(...);
 		accum.register(new JUnitScanner());
 		accum.register(new CheckstyleScanner());
+		accum.register(new FindBugsScanner());
 		
 		accum.accumulateStatistics();
 	}
