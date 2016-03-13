@@ -8,7 +8,7 @@ build-job:
     - atria
   stage: build
   script:
-    - cd report-accumulator
+    - cd report_accumulator
     - ./gradlew build deployReports
   only:
     - master
