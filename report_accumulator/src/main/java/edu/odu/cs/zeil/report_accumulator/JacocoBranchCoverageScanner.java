@@ -3,13 +3,8 @@
  */
 package edu.odu.cs.zeil.report_accumulator;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,19 +12,10 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Scanner;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.ErrorHandler;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
 
 /**
  * Report scanner for JUnit test reports.
@@ -127,15 +113,16 @@ public class JacocoBranchCoverageScanner implements ReportScanner {
 								Element foot = (Element) table.getElementsByTagName("tfoot").item(0);
 								NodeList cols = foot.getElementsByTagName("td");
 								String branchCoverage = cols.item(3).getTextContent(); // format: nn of NN
-								Scanner in = new Scanner(branchCoverage);
-								numMissed = in.nextInt();
-								String token = in.next();
-								if (!token.equals("of")) {
-									continue;
+								try (Scanner in = new Scanner(branchCoverage)) {
+									numMissed = in.nextInt();
+									String token = in.next();
+									if (!token.equals("of")) {
+										continue;
+									}
+									int total = in.nextInt();
+									numCovered = total - numMissed;
+									break;
 								}
-								int total = in.nextInt();
-								numCovered = total - numMissed;
-								break;
 							}
 						}
 						if (numCovered < 0 || numMissed < 0) {

@@ -16,7 +16,7 @@ import org.w3c.dom.NodeList;
  * @author zeil
  *
  */
-public class CheckstyleScanner implements ReportScanner {
+public class PMDScanner implements ReportScanner {
 	
 	Path reportDirectory;
 	Document doc;
@@ -72,8 +72,8 @@ public class CheckstyleScanner implements ReportScanner {
 		if (xmlFile.exists()) {
 			if (readDOM(xmlFile)) {
 				Element root = doc.getDocumentElement();
-				if (root.getTagName().equals("checkstyle")) {
-					NodeList details = root.getElementsByTagName("error");
+				if (root.getTagName().equals("pmd")) {
+					NodeList details = root.getElementsByTagName("violation");
 					int count = details.getLength();
 					double[] result = new double[1];
 					result[0] = (double)count;
@@ -91,7 +91,7 @@ public class CheckstyleScanner implements ReportScanner {
 	@Override
 	public String[] getDescriptors() {
 		String[] result = new String[1];
-		result[0] = "Warnings";
+		result[0] = "Violations";
 		return result;
 	}
 

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd version="5.2.3" timestamp="2016-03-13T17:56:28.057">
+<file name="/home/zeil/git/report_accumulator/report_accumulator/src/main/java/edu/odu/cs/zeil/report_accumulator/Accumulator.java">
+<violation beginline="126" endline="126" begincolumn="75" endcolumn="83" rule="UnnecessaryConversionTemporary" ruleset="Unnecessary" package="edu.odu.cs.zeil.report_accumulator" class="Accumulator" method="scanForStatistics" externalInfoUrl="http://pmd.sourceforge.net/pmd-5.2.3/pmd-java/rules/java/unnecessary.html#UnnecessaryConversionTemporary" priority="3">
+Avoid unnecessary temporaries when converting primitives to Strings
+</violation>
+<violation beginline="129" endline="129" begincolumn="75" endcolumn="83" rule="UnnecessaryConversionTemporary" ruleset="Unnecessary" package="edu.odu.cs.zeil.report_accumulator" class="Accumulator" method="scanForStatistics" externalInfoUrl="http://pmd.sourceforge.net/pmd-5.2.3/pmd-java/rules/java/unnecessary.html#UnnecessaryConversionTemporary" priority="3">
+Avoid unnecessary temporaries when converting primitives to Strings
+</violation>
+</file>
+<file name="/home/zeil/git/report_accumulator/report_accumulator/src/main/java/edu/odu/cs/zeil/report_accumulator/CheckstyleScanner.java">
+<violation beginline="59" endline="59" begincolumn="49" endcolumn="59" rule="UselessParentheses" ruleset="Unnecessary" package="edu.odu.cs.zeil.report_accumulator" class="CheckstyleScanner" method="readDOM" externalInfoUrl="http://pmd.sourceforge.net/pmd-5.2.3/pmd-java/rules/java/unnecessary.html#UselessParentheses" priority="4">
+Useless parentheses.
+</violation>
+<violation beginline="99" endline="108" begincolumn="25" endcolumn="25" rule="CollapsibleIfStatements" ruleset="Basic" package="edu.odu.cs.zeil.report_accumulator" class="CheckstyleScanner" method="extractStatistics" externalInfoUrl="http://pmd.sourceforge.net/pmd-5.2.3/pmd-java/rules/java/basic.html#CollapsibleIfStatements" priority="3">
+These nested if statements could be combined
+</violation>
+</file>
+<file name="/home/zeil/git/report_accumulator/report_accumulator/src/main/java/edu/odu/cs/zeil/report_accumulator/FindBugsScanner.java">
+<violation beginline="77" endline="77" begincolumn="49" endcolumn="59" rule="UselessParentheses" ruleset="Unnecessary" package="edu.odu.cs.zeil.report_accumulator" class="FindBugsScanner" method="readDOM" externalInfoUrl="http://pmd.sourceforge.net/pmd-5.2.3/pmd-java/rules/java/unnecessary.html#UselessParentheses" priority="4">
+Useless parentheses.
+</violation>
+<violation beginline="117" endline="175" begincolumn="25" endcolumn="25" rule="CollapsibleIfStatements" ruleset="Basic" package="edu.odu.cs.zeil.report_accumulator" class="FindBugsScanner" method="extractStatistics" externalInfoUrl="http://pmd.sourceforge.net/pmd-5.2.3/pmd-java/rules/java/basic.html#CollapsibleIfStatements" priority="3">
+These nested if statements could be combined
+</violation>
+</file>
+<file name="/home/zeil/git/report_accumulator/report_accumulator/src/main/java/edu/odu/cs/zeil/report_accumulator/JUnitScanner.java">
+<violation beginline="77" endline="77" begincolumn="49" endcolumn="59" rule="UselessParentheses" ruleset="Unnecessary" package="edu.odu.cs.zeil.report_accumulator" class="JUnitScanner" method="readDOM" externalInfoUrl="http://pmd.sourceforge.net/pmd-5.2.3/pmd-java/rules/java/unnecessary.html#UselessParentheses" priority="4">
+Useless parentheses.
+</violation>
+<violation beginline="117" endline="156" begincolumn="25" endcolumn="25" rule="CollapsibleIfStatements" ruleset="Basic" package="edu.odu.cs.zeil.report_accumulator" class="JUnitScanner" method="extractStatistics" externalInfoUrl="http://pmd.sourceforge.net/pmd-5.2.3/pmd-java/rules/java/basic.html#CollapsibleIfStatements" priority="3">
+These nested if statements could be combined
+</violation>
+</file>
+<file name="/home/zeil/git/report_accumulator/report_accumulator/src/main/java/edu/odu/cs/zeil/report_accumulator/JacocoBranchCoverageScanner.java">
+<violation beginline="82" endline="82" begincolumn="49" endcolumn="59" rule="UselessParentheses" ruleset="Unnecessary" package="edu.odu.cs.zeil.report_accumulator" class="JacocoBranchCoverageScanner" method="readDOM" externalInfoUrl="http://pmd.sourceforge.net/pmd-5.2.3/pmd-java/rules/java/unnecessary.html#UselessParentheses" priority="4">
+Useless parentheses.
+</violation>
+<violation beginline="142" endline="179" begincolumn="25" endcolumn="25" rule="CollapsibleIfStatements" ruleset="Basic" package="edu.odu.cs.zeil.report_accumulator" class="JacocoBranchCoverageScanner" method="extractStatistics" externalInfoUrl="http://pmd.sourceforge.net/pmd-5.2.3/pmd-java/rules/java/basic.html#CollapsibleIfStatements" priority="3">
+These nested if statements could be combined
+</violation>
+</file>
+</pmd>
