@@ -32,7 +32,7 @@ publishing {
         ivyJava(IvyPublication) {
             organisation 'edu.odu.cs.zeil'
             module project.name
-            revision '1.0-SNAPSHOT'
+            revision '1.0'
             descriptor.status = 'milestone'
             descriptor.branch = 'master'
 
