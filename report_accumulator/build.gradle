@@ -26,6 +26,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
+
 publishing {
     publications {
         ivyJava(IvyPublication) {
@@ -51,6 +52,7 @@ publishing {
         }
     }           
 }
+
 
 checkstyle {
     ignoreFailures = true
