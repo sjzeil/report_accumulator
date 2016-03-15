@@ -32,7 +32,7 @@ publishing {
         ivyJava(IvyPublication) {
             organisation 'edu.odu.cs.zeil'
             module project.name
-            revision '1.0'
+            revision '1.1'
             descriptor.status = 'milestone'
             descriptor.branch = 'master'
 
@@ -98,15 +98,23 @@ task copyDocs (type: Copy) {
     dependsOn 'javadoc'
 }
 
+
+
 task reports (dependsOn: ['htmlDependencyReport', 'javadoc', 'check', 'copyWebPages', 'copyDocs']) {
     description 'Generate all reports for this project'
+}
+
+
+def theBuildNumber = '';
+if (project.hasProperty('buildNumber')) {
+   theBuildNumber = project.buildNumber
 }
 
 task reportStats (type: JavaExec) {
     dependsOn 'reports'
     classpath = sourceSets.test.runtimeClasspath
     main = 'edu.odu.cs.zeil.report_accumulator.Main';
-    args = [buildNumber, 
+    args = [theBuildNumber, 
             'http://www.cs.odu.edu/~zeil/gitlab/reportAccumulator/reports/', 
             'build/reports']
 }
