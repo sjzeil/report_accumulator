@@ -22,16 +22,18 @@ public class Main {
 	 * Launch the accumulator with known report types.
 	 * 
 	 * @param args command line arguments
-	 *     websiteURL reportDir1 reportDir2 ...
+	 *     buildID websiteURL reportDir1 reportDir2 ...
 	 * @throws MalformedURLException 
 	 */
 	public static void main(String[] args) throws MalformedURLException {
-		URL website = new URL(args[0]);
+	    String buildID = args[0];
+		URL website = new URL(args[1]);
 		ArrayList<Path> dirs = new ArrayList<>();
-		for (int i = 1; i < args.length; ++i) {
+		for (int i = 2; i < args.length; ++i) {
 			dirs.add (Paths.get(args[i]));
 		}
-		Accumulator accum = new Accumulator (website, dirs.toArray(new Path[0]));
+		Accumulator accum = new Accumulator (buildID, website, 
+		                                     dirs.toArray(new Path[0]));
 		
 		// accum.register(...);
 		accum.register(new JUnitScanner());

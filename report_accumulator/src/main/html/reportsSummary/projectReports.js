@@ -36,7 +36,7 @@
 					        },
 					        xAxis: {
    						        title: {
-							        text: "Build #"
+							        text: "Build"
 						        }
 					        },
                             plotOptions: {
@@ -87,7 +87,7 @@
 					        },
 					        xAxis: {
    						        title: {
-							        text: "Build #"
+							        text: "Build"
 						        }
 					        },
                             plotOptions: {

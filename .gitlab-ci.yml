@@ -8,9 +8,9 @@ build-job:
     - atria
   stage: build
   script:
-    - echo build number is $CI_BUILD_ID
+    - echo build number is $CI_BUILD_REF
     - cd report_accumulator
-    - ./gradlew build deployReports -DBuild_Number=$CI_BUILD_ID
+    - ./gradlew build deployReports -Dorg.gradle.project.buildNumber=$CI_BUILD_REF
   only:
     - master
 

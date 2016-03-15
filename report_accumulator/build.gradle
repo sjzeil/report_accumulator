@@ -106,7 +106,9 @@ task reportStats (type: JavaExec) {
     dependsOn 'reports'
     classpath = sourceSets.test.runtimeClasspath
     main = 'edu.odu.cs.zeil.report_accumulator.Main';
-    args = ['http://www.cs.odu.edu/~zeil/gitlab/reportAccumulator/reports/', 'build/reports']
+    args = [buildNumber, 
+            'http://www.cs.odu.edu/~zeil/gitlab/reportAccumulator/reports/', 
+            'build/reports']
 }
 
 
