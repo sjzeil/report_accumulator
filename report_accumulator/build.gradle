@@ -3,7 +3,7 @@
  * Steven J Zeil, Old Dominion Univ.
  */
 
-// Apply the java plugin to add support for Java
+apply plugin: 'groovy'
 apply plugin: 'java'
 apply plugin: 'ivy-publish'
 apply plugin: 'project-report'
@@ -13,6 +13,14 @@ apply plugin: 'pmd'
 apply plugin: 'jacoco'
 
 
+buildscript {
+	repositories {
+		jcenter()
+	}
+	dependencies {
+		classpath 'org.hidetake:gradle-ssh-plugin:2.2.0+'
+	}
+}
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -23,6 +31,9 @@ repositories {
 
 // In this section you declare the dependencies for your production and test code
 dependencies {
+    compile gradleApi()
+    compile localGroovy()
+    compile 'org.hidetake:gradle-ssh-plugin:2.2.0+'
     testCompile 'junit:junit:4.12'
 }
 
