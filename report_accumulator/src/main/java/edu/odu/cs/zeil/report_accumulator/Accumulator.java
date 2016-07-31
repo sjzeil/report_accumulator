@@ -41,7 +41,7 @@ public class Accumulator {
     /**
      * Directories in which to search for project reports.
      */
-    private Path[] reportDirs;
+    private Path reportDir;
 
     /**
      * Scanners customized for each known type of report.
@@ -54,17 +54,16 @@ public class Accumulator {
      * @param aBuildID identifying string for this build.
      * @param aProjectWebsite URL for the project web site corresponding to the
      *           report directory
-     * @param reportDirectories a set of directories that may contain newly
-     *           generated reports. Each report must reside in a sub-directory
-     *           within one of these directories.
+     * @param reportDirectory A directory containing newly generated reports,
+     *           each report in a separate subdirectory.
      */
     public Accumulator (
             final String aBuildID,
             final URL aProjectWebsite,
-            final Path[] reportDirectories) {
+            final Path reportDirectory) {
         this.buildID = aBuildID;
         this.projectWebsite = aProjectWebsite;
-        this.reportDirs = reportDirectories;
+        this.reportDir = reportDirectory;
         scanners = new ArrayList<>();
     }
 
@@ -81,7 +80,7 @@ public class Accumulator {
 
 
     /**
-     * Scan the report directories for sub-directories containing common reports
+     * Scan the report directory for sub-directories containing common reports
      * If reportDir/subDir holds a report for which statistics are appropriate,
      * try to obtain a file projectWebSiteURL/reportDir/subDir.csv containing
      * prior statistics. If none exists, create a new such file. Add current
@@ -94,15 +93,13 @@ public class Accumulator {
      * build. 
      */
     public final void accumulateStatistics () {
-        for (Path reportDir: reportDirs) {
-            for (File dir: reportDir.toFile().listFiles()) {
-                if (dir.isDirectory()) {
-                    for (ReportScanner scanner: scanners) {
-                        scanForStatistics (dir, scanner);
-                    }
-                }
-            }
-        }
+    	for (File dir: reportDir.toFile().listFiles()) {
+    		if (dir.isDirectory()) {
+    			for (ReportScanner scanner: scanners) {
+    				scanForStatistics (dir, scanner);
+    			}
+    		}
+    	}
     }
 
 
@@ -198,8 +195,8 @@ public class Accumulator {
      * 
      * @return the local report directories.
      */
-    public Path[] getReportDirectories() {
-        return reportDirs;
+    public Path getReportDirectory() {
+        return reportDir;
     }
 
 

@@ -151,8 +151,7 @@ public class TestAccumulator {
 	 */
 	@Test
 	public void testNewStatistics() throws IOException {
-		Path[] paths = {testArea};
-		Accumulator acc = new Accumulator("X234567890", reportURL, paths);
+		Accumulator acc = new Accumulator("X234567890", reportURL, testArea);
 		acc.register(report1);
 		acc.register(report2);
 		
@@ -182,8 +181,7 @@ public class TestAccumulator {
 	 */
 	@Test
 	public void testOldStatistics() throws IOException {
-		Path[] paths = {testArea};
-		Accumulator acc = new Accumulator("X234567890", reportURL, paths);
+		Accumulator acc = new Accumulator("X234567890", reportURL, testArea);
 		acc.register(report1);
 		acc.register(report2);
 		

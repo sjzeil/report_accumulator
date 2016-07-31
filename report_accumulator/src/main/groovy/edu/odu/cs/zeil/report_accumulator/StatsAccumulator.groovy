@@ -91,4 +91,6 @@ class StatsAccumulator implements Plugin<Project> {
 				}
 				println "Sent to " + project.course.sshDeployURL
 			}
+		}
+	}
 }

@@ -1,5 +1,9 @@
 package edu.odu.cs.zeil.report_accumulator
 
+import java.nio.file.Path;
+import java.time.format.DateTimeFormatter;
+
+import org.gradle.api.DefaultTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.Delete
@@ -7,6 +11,8 @@ import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.Exec
 import org.gradle.api.tasks.Sync
 import org.gradle.api.tasks.bundling.Zip
+import org.gradle.api.tasks.TaskAction
+
 
 import org.hidetake.gradle.ssh.plugin.SshPlugin
 
@@ -14,47 +20,68 @@ import org.hidetake.gradle.ssh.plugin.SshPlugin
 /**
  * Properties for modifying report statistics accumulator.
  */
-class ReportStats  {
-
-	/**
-	 * Where are reports being deployed to? May be a path or an 
-	 * ssh URL.  
-	 */
-	String deployDestination = null;
-	
+class ReportStats extends DefaultTask {
 
 	/**
 	 * Where are sources for the reports stored, defaults to
-	 * build/reports.
+	 * rootproject/build/reports.
 	 */
-	File reportsDir = null;
-
+	File reportsDir = null
 	
 	/**
-	 * ssh key file to use when deploying to a remote server.
-	 * If null, relies on an externally configured ssh key agent.
+	 * http(s) URL of the location to which these reports are
+	 * being deploy. Specifically, the URL to which the reportsDir
+	 * is mapped.  This is used to check for statistics recorded
+	 * from prior builds.
 	 */
-	File deploySshKey = null;
-
+	URL reportsURL = null
+	
 	/**
 	 * Source directory for files to be included in the report,
+	 * typically the overall summary page,
 	 * defaults to src/main/html/reports
 	 */
-	File htmlSourceDir = null;
+	File htmlSourceDir = null
 	
 	/**
 	 * Destination directory where contents of htmlSourceDir
 	 * should be placed. 
 	 */
-	String htmlDestDir = 'main';
+	String htmlDestDir = 'main'
 	
+	
+	/**
+	 * Identifier for current build. Defaults to a time-stamp
+	 * but can be overridden to match, for example, a git commit ID.
+	 */
+	String buildID = null
 	
 	ReportStats (Project project) {
-		
-		// Add a Course object as a property of the project
-		reportsDir = project.file('build/reports');
-		htmlSourceDir = project.file('src/main/html/reports');
-		deployDestination = project.file('build/website');
+		reportsDir = project.rootProject.file('build/reports')
+		htmlSourceDir = project.file('src/main/html/reports')
+		buildID = LocalDate.now().format(DateTimeFormatter.ISO_INSTANT)
 	}
+	
+	
+	@TaskAction
+	def perform() {
+		Accumulator accum = new Accumulator (buildID, reportsURL,
+			reportsDir);
+
+        // accum.register(...);
+        accum.register(new JUnitScanner());
+        accum.register(new CheckstyleScanner());
+        accum.register(new FindBugsScanner());
+        accum.register(new PMDScanner());
+        accum.register(new JacocoBranchCoverageScanner());
+
+        accum.accumulateStatistics();
+		
+		project.copy {
+			from htmlSourceDir
+			into new File(reportsDir, htmlDestDir)
+		}
+	}
+	
 
 }
