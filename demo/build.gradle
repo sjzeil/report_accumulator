@@ -1,0 +1,19 @@
+/*
+ * Report Accumulator demo
+ * Steven J Zeil, Old Dominion Univ.
+ */
+
+
+
+buildscript {
+	repositories {
+		jcenter()
+	}
+	dependencies {
+		testcompile project(':report_accumulator')
+	}
+}
+
+task reportStats (type: ReportStats, dependsOn: ':report_accumulator:reports') {
+    reportsURL 'http://www.cs.odu.edu/~zeil/gitlab/reportAccumulator/reports/'
+}

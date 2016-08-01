@@ -1,0 +1,4 @@
+rootProject.name = 'reportAccumulator'
+
+include 'report_accumulator'
+include 'demo'
