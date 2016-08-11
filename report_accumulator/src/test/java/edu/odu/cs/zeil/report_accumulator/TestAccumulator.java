@@ -166,8 +166,7 @@ public class TestAccumulator {
 		String csvContent1 = readCSV(csv1);
 		assertTrue (csvContent1.contains(reportDir1));
 		assertTrue (csvContent1.contains("32"));
-		assertTrue (csvContent1.contains("X2345678"));
-        assertFalse (csvContent1.contains("X23456789"));
+		assertTrue (csvContent1.contains("X234567890"));
 		
 		String csvContent2 = readCSV(csv2);
 		assertTrue (csvContent2.contains(reportDir2));

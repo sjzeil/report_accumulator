@@ -4,16 +4,28 @@
  */
 
 
-
 buildscript {
 	repositories {
 		jcenter()
+		
+		flatDir {
+			dirs rootProject.file('../report_accumulator/build/libs')
+		}
 	}
 	dependencies {
-		testcompile project(':report_accumulator')
+		classpath name: 'report_accumulator'
 	}
 }
 
-task reportStats (type: ReportStats, dependsOn: ':report_accumulator:reports') {
-    reportsURL 'http://www.cs.odu.edu/~zeil/gitlab/reportAccumulator/reports/'
+import edu.odu.cs.zeil.report_accumulator.ReportStats
+
+task build (type: Copy) {
+	from '../report_accumulator/build/reports'
+	into 'build/reports'
+}
+
+
+
+task reportStats (type: ReportStats, dependsOn: 'build') {
+    reportsURL = 'http://www.cs.odu.edu/~zeil/gitlab/reportAccumulator/reports/'
 }

@@ -143,7 +143,7 @@ public class Accumulator {
                 if (buildID == null || buildID.trim().length() == 0) {
                     buildID = Integer.toString(lineCount + 1);
                 } else {
-                    final int maxBuildLabelWidth = 8;
+                    final int maxBuildLabelWidth = 16;
                     if (buildID.length() > maxBuildLabelWidth) {
                         buildID = buildID.substring(0,  maxBuildLabelWidth);
                     }

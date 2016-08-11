@@ -82,7 +82,7 @@ findbugsMain {
 
 tasks.withType(Checkstyle) {
   reports {
-    html.destination rootProject.file("build/reports/checkstyle/main.html")
+    html.destination project.file("build/reports/checkstyle/main.html")
   }
 }
 

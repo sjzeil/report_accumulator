@@ -1,7 +1,7 @@
 package edu.odu.cs.zeil.report_accumulator
 
-import java.nio.file.Path;
-import java.time.format.DateTimeFormatter;
+import java.nio.file.Path
+import java.time.Instant
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.Plugin
@@ -56,26 +56,30 @@ class ReportStats extends DefaultTask {
 	 */
 	String buildID = null
 	
-	ReportStats (Project project) {
-		reportsDir = project.rootProject.file('build/reports')
+	ReportStats () {
+		reportsDir = project.file('build/reports')
 		htmlSourceDir = project.file('src/main/html/reports')
-		buildID = LocalDate.now().format(DateTimeFormatter.ISO_INSTANT)
+		buildID = Instant.now().toString();
+		group = 'reporting'
 	}
 	
+	void setReportsURL (String str) {
+		reportsURL = new URL(str)
+	}
 	
 	@TaskAction
 	def perform() {
 		Accumulator accum = new Accumulator (buildID, reportsURL,
-			reportsDir);
+			reportsDir.toPath())
 
         // accum.register(...);
-        accum.register(new JUnitScanner());
-        accum.register(new CheckstyleScanner());
-        accum.register(new FindBugsScanner());
-        accum.register(new PMDScanner());
-        accum.register(new JacocoBranchCoverageScanner());
+        accum.register(new JUnitScanner())
+        accum.register(new CheckstyleScanner())
+        accum.register(new FindBugsScanner())
+        accum.register(new PMDScanner())
+        accum.register(new JacocoBranchCoverageScanner())
 
-        accum.accumulateStatistics();
+        accum.accumulateStatistics()
 		
 		project.copy {
 			from htmlSourceDir

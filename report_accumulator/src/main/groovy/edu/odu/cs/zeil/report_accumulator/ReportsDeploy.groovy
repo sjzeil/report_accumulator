@@ -1,5 +1,7 @@
 package edu.odu.cs.zeil.report_accumulator
 
+import java.nio.file.Path
+import java.util.zip.ZipOutputStream
 import org.gradle.api.DefaultTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -24,7 +26,7 @@ class ReportsDeploy extends DefaultTask {
 	 * ssh URL.  
 	 */
 	String deployDestination = null;
-	
+
 
 	/**
 	 * Where are sources for the reports stored, defaults to
@@ -32,7 +34,7 @@ class ReportsDeploy extends DefaultTask {
 	 */
 	File reportsDir = null;
 
-	
+
 	/**
 	 * ssh key file to use when deploying to a remote server.
 	 * If null, relies on an externally configured ssh key agent.
@@ -44,20 +46,144 @@ class ReportsDeploy extends DefaultTask {
 	 * defaults to src/main/html/reports
 	 */
 	File htmlSourceDir = null;
-	
+
 	/**
 	 * Destination directory where contents of htmlSourceDir
 	 * should be placed. 
 	 */
 	String htmlDestDir = 'main';
-	
-	
-	ReportsDeploy (Project project) {
-		
+
+
+	ReportsDeploy () {
+
 		// Add a Course object as a property of the project
 		reportsDir = project.file('build/reports');
 		htmlSourceDir = project.file('src/main/html/reports');
 		deployDestination = project.file('build/website');
+		
+		project.remotes {
+			remoteReportsHost {
+				// Values will be filled in later
+				host = 'placeholder'
+				user = 'placeHolder'
+				agent = true
+			}
+		}
+
 	}
+
+
+	@TaskAction
+	def perform() {
+		if (deployDestination.startsWith("ssh://")) {
+			deployBySsh()
+		} else if (deployDestination.startsWith("rsync://")) {
+			deployByRsync()
+		} else {
+		    deployByCopy()
+		}
+	}
+	
+	void deployBySsh() {
+		String sshUrl = deployDestination.substring(6)
+		int k0 = sshUrl.indexOf('@')
+		int k1 = sshUrl.indexOf(':')
+		def hostName = sshUrl.substring(k0+1,k1)
+		def userName = sshUrl.substring(0, k0)
+		def remotePath = sshUrl.substring(k1+1)
+		project.remotes.remoteReportsHost.host = hostName
+		project.remotes.remoteReportsHost.user = userName
+		if (deploySshKey != null) {
+			project.remotes.remoteReportsHost.identity =
+					project.file(deploySshKey)
+		}
+		zipItAllUp(project.file('build/temp/reports.zip'))
+		project.ssh.run {
+			settings {
+				dryRun = false
+			}
+			session (project.remotes.remoteReportsHost) {
+				put from: project.file('build/temp/reports.zip'),
+				into: remotePath
+				execute "unzip -u -q -o ${remotePath}/reports.zip -d ${remotePath}"
+				execute "/bin/rm -f ${remotePath}/reports.zip"
+			}
+			println "Sent to " + sshUrl
+		}
+	}
+	
+	void deplyByRsync() {
+		String rsyncUrl = deployDestination.substring(8)
+		if (!rsyncUrl.endsWith('/')) {
+			rsyncUrl = rsyncUrl + '/'
+		}
+		def sourceDir = project.file('build/reports/').toString()
+		if (!sourceDir.endsWith('/')) {
+			sourceDir = sourceDir + '/'
+		}
+
+		String sshCmd = "ssh";
+		if (deploySshKey != null) {
+			sshCmd = "ssh -i ${deploySshKey}"
+		}
+		def cmd = [
+				'rsync',
+				'-auzv',
+				'-e' + sshCmd,
+				sourceDir,
+				rsyncUrl
+				]
+
+		println ("Issuing rsync command\n" + cmd.iterator().join(" "))
+		project.exec {
+			commandLine cmd
+			if (deploySshKey != null) {
+				environment ('SSH_AGENT_PID', '')
+				environment ('SSH_AUTH_SOCK', '')
+			}
+		}
+
+	}
+	
+	
+	void deployByCopy() {
+		// ToDo
+	}
+	
+	
+	
+	
+	void zipItAllUp (File destination)
+	{
+		File reportsDir = project.file("build/reports")
+		Path reportsBase = reportsDir.toPath();
+		ZipOutputStream zout = new ZipOutputStream(new FileOutputStream(destination));
+		zout.close();
+		Path zipfile = destination.toPath();
+		Queue<File> q = new LinkedList<File>();
+		q.push(reportsDir);
+		FileSystem zipfs = FileSystems.newFileSystem(zipfile, null);
+		if (zipfs == null) {
+			logger.error ("Could not create zip file system at " + zipfile)
+		}
+		while (!q.isEmpty()) {
+			File dir = q.remove()
+			for (File child : dir.listFiles()) {
+				Path relChild = reportsBase.relativize(child.toPath());
+				if (child.isDirectory()) {
+					q.add(child);
+					Path directory = zipfs.getPath("/", relChild.toString())
+					Files.createDirectories(directory)
+				} else {
+					Path childLoc = zipfs.getPath("/", relChild.toString())
+					Files.copy(child.toPath(), childLoc)
+				}
+			}
+		}
+		zipfs.close()
+	}
+
+	
+	
 
 }
