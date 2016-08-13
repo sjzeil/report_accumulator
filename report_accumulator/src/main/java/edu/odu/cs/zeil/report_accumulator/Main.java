@@ -7,7 +7,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 
 /**
  * Launch the accumulator with known report types.
@@ -28,12 +27,8 @@ public class Main {
 	public static void main(String[] args) throws MalformedURLException {
 	    String buildID = args[0];
 		URL website = new URL(args[1]);
-		ArrayList<Path> dirs = new ArrayList<>();
-		for (int i = 2; i < args.length; ++i) {
-			dirs.add (Paths.get(args[i]));
-		}
-		Accumulator accum = new Accumulator (buildID, website, 
-		                                     dirs.toArray(new Path[0]));
+		Path reports = Paths.get(args[2]);
+		Accumulator accum = new Accumulator (buildID, website, reports);
 		
 		// accum.register(...);
 		accum.register(new JUnitScanner());

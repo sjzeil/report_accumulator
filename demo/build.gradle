@@ -1,0 +1,42 @@
+/*
+ * Report Accumulator demo
+ * Steven J Zeil, Old Dominion Univ.
+ */
+
+
+buildscript {
+	repositories {
+		jcenter()
+		
+		flatDir {
+			dirs rootProject.file('../report_accumulator/build/libs')
+		}
+	}
+	dependencies {
+		classpath name: 'report_accumulator'
+		classpath 'org.hidetake:gradle-ssh-plugin:2.5.0+'
+	}
+}
+
+apply plugin: 'org.hidetake.ssh'
+
+
+import edu.odu.cs.zeil.report_accumulator.ReportStats
+import edu.odu.cs.zeil.report_accumulator.ReportsDeploy
+
+task build (type: Copy) {
+	from '../report_accumulator/build/reports'
+	into 'build/reports'
+}
+
+
+
+task reportStats (type: ReportStats, dependsOn: 'build') {
+    reportsURL = 'http://www.cs.odu.edu/~zeil/gitlab/reportAccumulator/reports/'
+}
+
+task deployReports (type: ReportsDeploy, dependsOn: 'reportStats') {
+	deployDestination = '/home/zeil/temp/tmp'
+	//deployDestination = 'ssh://zeil@atria.cs.odu.edu:/home/zeil/temp/tmp'
+	//deployDestination = 'rsync://zeil@atria.cs.odu.edu:/home/zeil/temp/tmp'
+}

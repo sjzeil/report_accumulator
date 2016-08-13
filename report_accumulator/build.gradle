@@ -3,7 +3,7 @@
  * Steven J Zeil, Old Dominion Univ.
  */
 
-// Apply the java plugin to add support for Java
+apply plugin: 'groovy'
 apply plugin: 'java'
 apply plugin: 'ivy-publish'
 apply plugin: 'project-report'
@@ -13,6 +13,14 @@ apply plugin: 'pmd'
 apply plugin: 'jacoco'
 
 
+buildscript {
+	repositories {
+		jcenter()
+	}
+	dependencies {
+		classpath 'org.hidetake:gradle-ssh-plugin:2.2.0+'
+	}
+}
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -23,6 +31,9 @@ repositories {
 
 // In this section you declare the dependencies for your production and test code
 dependencies {
+    compile gradleApi()
+    compile localGroovy()
+    compile 'org.hidetake:gradle-ssh-plugin:2.2.0+'
     testCompile 'junit:junit:4.12'
 }
 
@@ -52,6 +63,7 @@ publishing {
         }
     }           
 }
+*/
 
 
 checkstyle {
@@ -71,7 +83,7 @@ findbugsMain {
 
 tasks.withType(Checkstyle) {
   reports {
-    html.destination rootProject.file("build/reports/checkstyle/main.html")
+    html.destination project.file("build/reports/checkstyle/main.html")
   }
 }
 
@@ -98,25 +110,15 @@ task copyDocs (type: Copy) {
     dependsOn 'javadoc'
 }
 
-
-
 task reports (dependsOn: ['htmlDependencyReport', 'javadoc', 'check', 'copyWebPages', 'copyDocs']) {
     description 'Generate all reports for this project'
-}
-
-
-def theBuildNumber = '';
-if (project.hasProperty('buildNumber')) {
-   theBuildNumber = project.buildNumber
 }
 
 task reportStats (type: JavaExec) {
     dependsOn 'reports'
     classpath = sourceSets.test.runtimeClasspath
     main = 'edu.odu.cs.zeil.report_accumulator.Main';
-    args = [theBuildNumber, 
-            'http://www.cs.odu.edu/~zeil/gitlab/reportAccumulator/reports/', 
-            'build/reports']
+    args = ['http://www.cs.odu.edu/~zeil/gitlab/reportAccumulator/reports/', 'build/reports']
 }
 
 

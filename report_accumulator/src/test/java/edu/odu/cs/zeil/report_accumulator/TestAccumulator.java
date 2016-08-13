@@ -151,8 +151,7 @@ public class TestAccumulator {
 	 */
 	@Test
 	public void testNewStatistics() throws IOException {
-		Path[] paths = {testArea};
-		Accumulator acc = new Accumulator("X234567890", reportURL, paths);
+		Accumulator acc = new Accumulator("X234567890", reportURL, testArea);
 		acc.register(report1);
 		acc.register(report2);
 		
@@ -167,8 +166,7 @@ public class TestAccumulator {
 		String csvContent1 = readCSV(csv1);
 		assertTrue (csvContent1.contains(reportDir1));
 		assertTrue (csvContent1.contains("32"));
-		assertTrue (csvContent1.contains("X2345678"));
-        assertFalse (csvContent1.contains("X23456789"));
+		assertTrue (csvContent1.contains("X234567890"));
 		
 		String csvContent2 = readCSV(csv2);
 		assertTrue (csvContent2.contains(reportDir2));
@@ -182,8 +180,7 @@ public class TestAccumulator {
 	 */
 	@Test
 	public void testOldStatistics() throws IOException {
-		Path[] paths = {testArea};
-		Accumulator acc = new Accumulator("X234567890", reportURL, paths);
+		Accumulator acc = new Accumulator("X234567890", reportURL, testArea);
 		acc.register(report1);
 		acc.register(report2);
 		
