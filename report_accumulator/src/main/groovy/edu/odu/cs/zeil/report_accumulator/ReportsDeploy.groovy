@@ -47,24 +47,11 @@ class ReportsDeploy extends DefaultTask {
 	 */
 	File deploySshKey = null;
 
-	/**
-	 * Source directory for files to be included in the report,
-	 * defaults to src/main/html/reports
-	 */
-	File htmlSourceDir = null;
-
-	/**
-	 * Destination directory where contents of htmlSourceDir
-	 * should be placed. 
-	 */
-	String htmlDestDir = 'main';
-
 
 	ReportsDeploy () {
 
 		// Add a Course object as a property of the project
 		reportsDir = project.file('build/reports');
-		htmlSourceDir = project.file('src/main/html/reports');
 		deployDestination = project.file('build/website');
 		
 		project.remotes {
