@@ -1,7 +1,13 @@
 package edu.odu.cs.zeil.report_accumulator
 
 import java.nio.file.Path
+import java.nio.file.Paths
+import java.nio.file.Files
+import java.nio.file.FileSystem
+import java.nio.file.FileSystems
+
 import java.util.zip.ZipOutputStream
+
 import org.gradle.api.DefaultTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -69,7 +75,6 @@ class ReportsDeploy extends DefaultTask {
 				agent = true
 			}
 		}
-
 	}
 
 
@@ -112,12 +117,15 @@ class ReportsDeploy extends DefaultTask {
 		}
 	}
 	
-	void deplyByRsync() {
+	void deployByRsync() {
 		String rsyncUrl = deployDestination.substring(8)
 		if (!rsyncUrl.endsWith('/')) {
 			rsyncUrl = rsyncUrl + '/'
 		}
-		def sourceDir = project.file('build/reports/').toString()
+		
+		Path cwd = Paths.get('').toAbsolutePath();
+		Path relativeReportsDir = cwd.relativize(reportsDir.toPath())
+		String sourceDir = relativeReportsDir.toString()
 		if (!sourceDir.endsWith('/')) {
 			sourceDir = sourceDir + '/'
 		}
@@ -147,7 +155,10 @@ class ReportsDeploy extends DefaultTask {
 	
 	
 	void deployByCopy() {
-		// ToDo
+		project.copy {
+			from 'build/reports'
+			into deployDestination
+		}
 	}
 	
 	
@@ -155,23 +166,23 @@ class ReportsDeploy extends DefaultTask {
 	
 	void zipItAllUp (File destination)
 	{
-		File reportsDir = project.file("build/reports")
-		Path reportsBase = reportsDir.toPath();
-		ZipOutputStream zout = new ZipOutputStream(new FileOutputStream(destination));
-		zout.close();
-		Path zipfile = destination.toPath();
-		Queue<File> q = new LinkedList<File>();
-		q.push(reportsDir);
-		FileSystem zipfs = FileSystems.newFileSystem(zipfile, null);
+		destination.parentFile.mkdirs()
+		Path reportsBase = reportsDir.toPath()
+		ZipOutputStream zout = new ZipOutputStream(new FileOutputStream(destination))
+		zout.close()
+		Path zipfile = destination.toPath()
+		Queue<File> q = new LinkedList<File>()
+		q.push(reportsDir)
+		FileSystem zipfs = FileSystems.newFileSystem(zipfile, null)
 		if (zipfs == null) {
 			logger.error ("Could not create zip file system at " + zipfile)
 		}
 		while (!q.isEmpty()) {
 			File dir = q.remove()
 			for (File child : dir.listFiles()) {
-				Path relChild = reportsBase.relativize(child.toPath());
+				Path relChild = reportsBase.relativize(child.toPath())
 				if (child.isDirectory()) {
-					q.add(child);
+					q.add(child)
 					Path directory = zipfs.getPath("/", relChild.toString())
 					Files.createDirectories(directory)
 				} else {
