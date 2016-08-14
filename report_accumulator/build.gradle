@@ -3,29 +3,101 @@
  * Steven J Zeil, Old Dominion Univ.
  */
 
-apply plugin: 'groovy'
-apply plugin: 'java'
-apply plugin: 'ivy-publish'
-apply plugin: 'project-report'
-apply plugin: 'checkstyle'
-apply plugin: 'findbugs'
-apply plugin: 'pmd'
-apply plugin: 'jacoco'
-
-
+ 
 buildscript {
 	repositories {
 		jcenter()
 	}
 	dependencies {
 		classpath 'org.hidetake:gradle-ssh-plugin:2.2.0+'
+		classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.1'
+	}
+}
+
+
+apply plugin: 'groovy'
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+//apply plugin: 'ivy-publish'
+apply plugin: 'project-report'
+apply plugin: 'checkstyle'
+apply plugin: 'findbugs'
+apply plugin: 'pmd'
+apply plugin: 'jacoco'
+
+apply plugin: 'com.jfrog.bintray'
+
+
+publishing {
+    publications {
+		/*
+        ivyJava(IvyPublication) {
+            organisation 'edu.odu.cs.zeil'
+            module project.name
+            revision '1.1'
+            descriptor.status = 'milestone'
+            descriptor.branch = 'master'
+
+            from components.java
+        }
+        */
+		mavenJava(MavenPublication) {
+            groupId 'edu.odu.cs.zeil'
+            artifactId 'report_accumulator'
+            version '1.1'
+			
+			from components.java
+		}
+    }
+    repositories {
+		/*
+        ivy {
+            name 'ivyRepo'
+            url 'sftp://linux.cs.odu.edu:22/home/zeil/secure_html/ivyrepo'
+            // Readable via https://www.cs.odu.edu/~zeil/ivyrepo    
+            credentials {
+                // Credentials are loaded from ~/.gradle/gradle.properties
+                username "$ivyRepoUser"
+                password "$ivyRepoPass"
+            }
+        }
+        */
+		/*
+        maven {
+            name 'mavenRepo'
+            url 'sftp://linux.cs.odu.edu:22/home/zeil/secure_html/mavenrepo'
+            // Readable via https://www.cs.odu.edu/~zeil/ivyrepo    
+            credentials {
+                // Credentials are loaded from ~/.gradle/gradle.properties
+                username "$ivyRepoUser"
+                password "$ivyRepoPass"
+            }
+        }
+        */
+    }           
+}
+
+
+bintray {
+   // Credentials are loaded from ~/.gradle/gradle.properties
+	user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : 'fakeuser'
+	key = project.hasProperty('bintrayKey') ? project.property('bintrayKey') : 'fakeKey'
+	publications = ['mavenJava']
+	pkg {
+		repo = "maven"
+		name = 'report_accumulator'
+		
+		version {
+			name = '1.1'
+			desc = 'Gradle/Java Report Statistics Accumulator v1.1'
+			released  = new Date()
+			vcsTag = '1.1'
+		}
 	}
 }
 
 // In this section you declare where to find the dependencies of your project
 repositories {
-    // Use 'jcenter' for resolving your dependencies.
-    // You can declare any Maven/Ivy/file repository here.
     jcenter()
 }
 
@@ -38,31 +110,6 @@ dependencies {
 }
 
 
-publishing {
-    publications {
-        ivyJava(IvyPublication) {
-            organisation 'edu.odu.cs.zeil'
-            module project.name
-            revision '1.1'
-            descriptor.status = 'milestone'
-            descriptor.branch = 'master'
-
-            from components.java
-        }
-    }
-    repositories {
-        ivy {
-            name 'ivyRepo'
-            url 'sftp://linux.cs.odu.edu:22/home/zeil/secure_html/ivyrepo'
-            // Readable via https://www.cs.odu.edu/~zeil/ivyrepo    
-            credentials {
-                // Credentials are loaded from ~/.gradle/gradle.properties
-                username "$ivyRepoUser"
-                password "$ivyRepoPass"
-            }
-        }
-    }           
-}
 
 
 
