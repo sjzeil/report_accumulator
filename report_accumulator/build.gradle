@@ -10,27 +10,26 @@ buildscript {
 	}
 	dependencies {
 		classpath 'org.hidetake:gradle-ssh-plugin:2.2.0+'
-		classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.1'
+		// classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.1'
 	}
 }
 
 
 apply plugin: 'groovy'
 apply plugin: 'java'
-apply plugin: 'maven-publish'
-//apply plugin: 'ivy-publish'
+//apply plugin: 'maven-publish'
+apply plugin: 'ivy-publish'
 apply plugin: 'project-report'
 apply plugin: 'checkstyle'
 apply plugin: 'findbugs'
 apply plugin: 'pmd'
 apply plugin: 'jacoco'
 
-apply plugin: 'com.jfrog.bintray'
+//apply plugin: 'com.jfrog.bintray'
 
 
 publishing {
     publications {
-		/*
         ivyJava(IvyPublication) {
             organisation 'edu.odu.cs.zeil'
             module project.name
@@ -40,7 +39,7 @@ publishing {
 
             from components.java
         }
-        */
+        /*
 		mavenJava(MavenPublication) {
             groupId 'edu.odu.cs.zeil'
             artifactId 'report_accumulator'
@@ -48,6 +47,7 @@ publishing {
 			
 			from components.java
 		}
+		*/
     }
     repositories {
 		/*
@@ -78,6 +78,7 @@ publishing {
 }
 
 
+/*
 bintray {
    // Credentials are loaded from ~/.gradle/gradle.properties
 	user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : 'fakeuser'
@@ -95,6 +96,7 @@ bintray {
 		}
 	}
 }
+*/
 
 // In this section you declare where to find the dependencies of your project
 repositories {
