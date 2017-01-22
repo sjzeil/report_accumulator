@@ -12,7 +12,7 @@ build-job:
     - export BUILD_LABEL="`date -I` $CI_BUILD_REF"
     - cd report_accumulator
     - ./gradlew build reports
-    - cd demo
+    - cd ../demo
     - ./gradlew deployReports -Dorg.gradle.project.buildNumber="$BUILD_LABEL"
   only:
     - master

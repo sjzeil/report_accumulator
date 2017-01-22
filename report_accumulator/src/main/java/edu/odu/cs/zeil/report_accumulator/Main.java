@@ -22,7 +22,7 @@ public class Main {
 	 * 
 	 * @param args command line arguments
 	 *     buildID websiteURL reportDir1 reportDir2 ...
-	 * @throws MalformedURLException 
+	 * @throws MalformedURLException if website URL (1st parameter) is invalid
 	 */
 	public static void main(String[] args) throws MalformedURLException {
 	    String buildID = args[0];
