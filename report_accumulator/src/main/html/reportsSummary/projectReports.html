@@ -11,25 +11,77 @@
 	</head>
 	<body>
 	    <h1>Project Reports</h1>
-	    
-	    <h2>Trends</h2>
-	    
 
-<!--	    (These graphs will become "live" as functionality is added to the project.) -->
+		<table>
+		  <tr>
+			<th colspan="2">General</th>
+		  </tr>
+		  <tr>
+			<td>
+			  <a href="../docs/javadoc/">JavaDoc</a>
+			</td>
+			<td/>
+		  </tr>
+		  <tr>
+			<td>
+	   		  <a href="../project/dependencies/root.html">Project
+	   			Dependencies</a>
+			</td>
+		  <tr>
+			<th colspan="2">Testing</th>
+		  </tr>
+		  <tr>
+			<td>
+			  <a href="../tests/">JUnit test report</a>
+			</td>
+			<td>
+			  <!-- For each graph to be displayed, 
+			       create a named div element. -->
+	          <div id="junitGraph" class="graph">junit</div>
+			</td>
+		  </tr>
+		  <tr>
+			<td>
+			  <a href="../jacoco/test/html/index.html">Unit Test
+				Coverage</a>
+			</td>
+			<td>
+              <div id="jacocoGraph" class="graph">jacoco</div>
+			</td>
+		  </tr>
+		  <tr>
+			<th colspan="2">Analysis</th>
+		  </tr>
+		  <tr>
+			<td>
+			  <a href="../checkstyle/main.html">CheckStyle</a>
+			</td>
+			<td>
+			  <div id="checkstyleGraph" class="graph">checkstyle</div>
+			</td>
+		  </tr>
+		  <tr>
+			<td>
+			  <a href="../findbugs/main.html">FindBugs</a>
+			</td>
+			<td>
+			  <div id="findbugsGraph" class="graph">findBugs</div>
+			</td>
+		  </tr>
+		  <tr>
+			<td>
+			  <a href="../pmd/main.html">PMD</a>
+			</td>
+			<td>			  
+			  <div id="pmdGraph" class="graph">PMD</div>
+			</td>
+		  </tr>
+		</table>
+		  
 	    
-	    <!-- For each graph to be displayed, create a named div element. -->
-	   	<div class="reportGraphs">
-	        <div id="junitGraph" class="graph">junit</div>
-            <div id="jacocoGraph" class="graph">jacoco</div>
-        </div>
-	   	<div class="reportGraphs">
-            <div id="pmdGraph" class="graph">PMD</div>
-            <div id="findbugsGraph" class="graph">findBugs</div>
-            <div id="checkstyleGraph" class="graph">checkstyle</div>
-        </div> 
-        
-        <!-- For each graph to be displayed, call register1 or register2 (depending
-                on the number of data series being plotted.  -->
+        <!-- For each graph to be displayed, call register1 or 
+		     register2 (depending on the number of data series
+		     being plotted.  -->
 	    <script type="text/javascript">
 	        register2("junitGraph", "../tests.csv", "JUnit Tests", "Test Cases");
 	        register2("jacocoGraph", "../jacoco.csv", "Test Coverage", "# Branches");
@@ -38,28 +90,6 @@
 	        register2("findbugsGraph", "../findbugs.csv", "FindBugs", "Warnings");
 		</script>
 
-	    <h2>Detailed Reports</h2>
-		
-	    <div class="reportLinks">
-	   		<ul>
-	   		    <li>General:
-	   		        <ul>
-	   			       <li><a href="../docs/javadoc/">JavaDoc</a></li>
-	   			       <li><a href="../project/dependencies/root.html">Project Dependencies</a></li>
-	   			    </ul></li>
-	   			<li>Tests:
-	   			    <ul>
-	   			        <li><a href="../tests/">JUnit test report</a></li>
-	    		        <li><a href="../jacoco/test/html/index.html">Unit Test Coverage</a></li>
-	    		    </ul></li>
-	    	    <li>Analysis:
-	    	        <ul>
-	    		        <li><a href="../checkstyle/main.html">CheckStyle</a></li>
-	    		        <li><a href="../findbugs/main.html">FindBugs</a></li>
-	    		        <li><a href="../pmd/main.html">PMD</a></li>
-	    		    </ul></li>	    			
-	   		</ul>
-	   	</div>
-	    
+
 	</body>
 </html>

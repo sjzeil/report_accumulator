@@ -12,7 +12,7 @@ build-job:
     - echo build number is $CI_BUILD_REF
     - eval $(ssh-agent -s)
     - ssh-add <(echo "$REPORTS_SSH_KEY")
-    - export BUILD_LABEL="`date -I` $CI_BUILD_REF"
+    - export BUILD_LABEL="`date -Idate` $CI_BUILD_REF"
     - cd report_accumulator
     - ./gradlew build reports
     - cd ../demo
