@@ -47,5 +47,5 @@ task deployReports (type: ReportsDeploy, dependsOn: 'reportStats') {
 	//deployDestination = '/home/zeil/temp'
 	//deployDestination = 'ssh://zeil@atria.cs.odu.edu:/home/zeil/temp/tmp'
 	//deployDestination = 'rsync://zeil@atria.cs.odu.edu:/home/zeil/temp/tmp'
-	deployDestination = 'rsync://zeil@atria.cs.odu.edu:/home/zeil/public_html/gitlab/reportAccumulator/reports/'
+	deployDestination = 'rsync://zeil@atria.cs.odu.edu:reportAccumulator/reports/'
 }

@@ -3,6 +3,11 @@ stages:
   - test
   - deploy
 
+before-script:
+
+  - eval $(ssh-agent -s)
+  - ssh-add <(echo "$REPORTS_SSH_KEY")
+
 build-job:
   tags:
     - atria
