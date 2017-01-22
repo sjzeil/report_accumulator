@@ -15,43 +15,43 @@
   *                      row 1 of the CSV file).
   */
 
-	        function register1(graphName, csvURL, title, yAxisTitle) {
-	            var divName = "#" + graphName;
-	            $(document).ready(function() {  
-			        $.get(csvURL, function(csv) {
-			             $(divName).highcharts({
-			                chart: {
-			        	        type: 'area'
-			                },
-			                data: {
-			                    csv: csv
-			                },
-			                title: {
-						        text: title
-					        },
-					        yAxis: {
-   						        title: {
-							        text: yAxisTitle
-						        }
-					        },
-					        xAxis: {
-   						        title: {
-							        text: "Build"
-						        }
-					        },
-                            plotOptions: {
-                                series: {
-                                    stacking: 'normal'
-                                }
-                            },
-                            series: [{
-                                color: "#0000cc"
-                                }
-                            ]
-			             });
-			        });
-			    });	
-	        }
+function register1(graphName, csvURL, title, yAxisTitle) {
+	var divName = "#" + graphName;
+	$(document).ready(function() {  
+		$.get(csvURL, function(csv) {
+			$(divName).highcharts({
+			    chart: {
+			        type: 'area'
+			    },
+			    data: {
+			        csv: csv
+			    },
+			    title: {
+					text: title
+				},
+				yAxis: {
+   					title: {
+						text: yAxisTitle
+					}
+				},
+				xAxis: {
+   					title: {
+						text: "Build"
+					}
+				},
+                plotOptions: {
+                    series: {
+                        stacking: 'normal'
+                    }
+                },
+                series: [{
+                    color: "#0000cc"
+                }
+                        ]
+			});
+		});
+	});	
+}
 
 
 
@@ -66,43 +66,43 @@
   *                      row 1 of the CSV file).
   */
 
-	        function register2(graphName, csvURL, title, yAxisTitle) {
-	            var divName = "#" + graphName;
-	            $(document).ready(function() {  
-			        $.get(csvURL, function(csv) {
-			             $(divName).highcharts({
-			                chart: {
-			        	        type: 'area'
-			                },
-			                data: {
-			                    csv: csv
-			                },
-			                title: {
-						        text: title
-					        },
-					        yAxis: {
-   						        title: {
-							        text: yAxisTitle
-						        }
-					        },
-					        xAxis: {
-   						        title: {
-							        text: "Build"
-						        }
-					        },
-                            plotOptions: {
-                                series: {
-                                    stacking: 'normal'
-                                }
-                            },
-                            series: [{
-                                color: "#009933"
-                                }, {
-                                color: "#cc0000"
-                                }
-                            ]
-			             });
-			        });
-			    });	
-	        }
+function register2(graphName, csvURL, title, yAxisTitle) {
+	var divName = "#" + graphName;
+	$(document).ready(function() {  
+		$.get(csvURL, function(csv) {
+			$(divName).highcharts({
+			    chart: {
+			        type: 'area'
+			    },
+			    data: {
+			        csv: csv
+			    },
+			    title: {
+					text: title
+				},
+				yAxis: {
+   					title: {
+						text: yAxisTitle
+					}
+				},
+				xAxis: {
+   					title: {
+						text: "Build"
+					}
+				},
+                plotOptions: {
+                    series: {
+                        stacking: 'normal'
+                    }
+                },
+                series: [{
+                    color: "#009933"
+                }, {
+                    color: "#cc0000"
+                }
+                        ]
+			});
+		});
+	});	
+}
 

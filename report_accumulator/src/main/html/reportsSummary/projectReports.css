@@ -1,5 +1,5 @@
 div.graph {
-	display: inline;
+    display: block;
     background-color: #C0C0C0;
     width:400px; 
     height:300px;
@@ -7,7 +7,8 @@ div.graph {
 }
 
 th {
-	font-size: 125%;
+	font-size: 155%;
+	padding-top: 1.5em;
 }
 
 div.reportLinks {
