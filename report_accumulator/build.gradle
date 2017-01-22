@@ -9,7 +9,7 @@ buildscript {
 		jcenter()
 	}
 	dependencies {
-		classpath 'org.hidetake:gradle-ssh-plugin:2.2.0+'
+		classpath 'org.hidetake:gradle-ssh-plugin:2.7.0+'
 		// classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.1'
 	}
 }
@@ -26,6 +26,22 @@ apply plugin: 'pmd'
 apply plugin: 'jacoco'
 
 //apply plugin: 'com.jfrog.bintray'
+
+
+group = 'edu.odu.cs.zeil'
+version = '1.1'
+// Credentials are loaded from ~/.gradle/gradle.properties
+if(project.hasProperty("ivyRepoUser")){
+	ext.ivyRepoUser = "$ivyRepoUser";
+} else {
+	ext.ivyRepoUser = "user";
+}
+if(project.hasProperty("ivyRepoPass")){
+	ext.ivyRepoPass = "$ivyRepoPass";
+} else {
+	ext.ivyRepoPass = "password";
+}
+
 
 
 publishing {
@@ -50,19 +66,16 @@ publishing {
 		*/
     }
     repositories {
-		/*
-        ivy {
+		ivy {
             name 'ivyRepo'
             url 'sftp://linux.cs.odu.edu:22/home/zeil/secure_html/ivyrepo'
             // Readable via https://www.cs.odu.edu/~zeil/ivyrepo    
             credentials {
                 // Credentials are loaded from ~/.gradle/gradle.properties
-                username "$ivyRepoUser"
-                password "$ivyRepoPass"
+                username project.ivyRepoUser
+                password project.ivyRepoPass
             }
         }
-        */
-		/*
         maven {
             name 'mavenRepo'
             url 'sftp://linux.cs.odu.edu:22/home/zeil/secure_html/mavenrepo'
@@ -73,8 +86,16 @@ publishing {
                 password "$ivyRepoPass"
             }
         }
-        */
     }           
+}
+
+
+jar {
+	manifest {
+		attributes 'Implementation-Title': 'Report Accumulator',
+			'Implementation-Version': '1.1'
+	}
+	// from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
 
@@ -107,7 +128,7 @@ repositories {
 dependencies {
     compile gradleApi()
     compile localGroovy()
-    compile 'org.hidetake:gradle-ssh-plugin:2.2.0+'
+    compile 'org.hidetake:gradle-ssh-plugin:2.7.0+'
     testCompile 'junit:junit:4.12'
 }
 
