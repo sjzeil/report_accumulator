@@ -24,19 +24,28 @@ apply plugin: 'org.hidetake.ssh'
 import edu.odu.cs.zeil.report_accumulator.ReportStats
 import edu.odu.cs.zeil.report_accumulator.ReportsDeploy
 
-task build (type: Copy) {
+
+task build (type: GradleBuild) {
+	buildFile = '../report_accumulator/build.gradle'
+	tasks = ['reports']
+}
+
+
+
+task reports (type: Copy, dependsOn: 'build') {
 	from '../report_accumulator/build/reports'
 	into 'build/reports'
 }
 
 
 
-task reportStats (type: ReportStats, dependsOn: 'build') {
+task reportStats (type: ReportStats, dependsOn: 'reports') {
     reportsURL = 'http://www.cs.odu.edu/~zeil/gitlab/reportAccumulator/reports/'
 }
 
 task deployReports (type: ReportsDeploy, dependsOn: 'reportStats') {
-	deployDestination = '/home/zeil/temp/tmp'
+	//deployDestination = '/home/zeil/temp'
 	//deployDestination = 'ssh://zeil@atria.cs.odu.edu:/home/zeil/temp/tmp'
 	//deployDestination = 'rsync://zeil@atria.cs.odu.edu:/home/zeil/temp/tmp'
+	deployDestination = 'rsync://zeil@atria.cs.odu.edu:/home/zeil/public_html/gitlab/reportAccumulator/reports/'
 }

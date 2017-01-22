@@ -163,17 +163,8 @@ task reports (dependsOn: ['htmlDependencyReport', 'javadoc', 'check', 'copyWebPa
     description 'Generate all reports for this project'
 }
 
-task reportStats (type: JavaExec) {
-    dependsOn 'reports'
-    classpath = sourceSets.test.runtimeClasspath
-    main = 'edu.odu.cs.zeil.report_accumulator.Main';
-    args = ['http://www.cs.odu.edu/~zeil/gitlab/reportAccumulator/reports/', 'build/reports']
-}
 
-
-task deployReports (type: Copy) {
-    description 'copy all reports to project web page'
-    dependsOn 'reportStats'
-    from 'build/reports'
-    into '/home/zeil/public_html/gitlab/' + project.name + '/reports'
-}
+/*
+   Report deployment is done via the accompanying demo project, as an example
+   of how to use this plug-in. 
+*/
