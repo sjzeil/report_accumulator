@@ -9,9 +9,9 @@ build-job:
   stage: build
   script:
     - echo build number is $CI_BUILD_REF
-    - export BUILDID=`date -I` $CI_BUILD_REF
+    - export BUILD_LABEL=`date -I` $CI_BUILD_REF
     - cd demo
-    - ./gradlew build deployReports -Dorg.gradle.project.buildNumber=$BUILDID
+    - ./gradlew build deployReports -Dorg.gradle.project.buildNumber=$BUILD_LABEL
   only:
     - master
 
