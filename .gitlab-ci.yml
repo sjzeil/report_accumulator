@@ -3,10 +3,6 @@ stages:
   - test
   - deploy
 
-before-script:
-
-  - eval $(ssh-agent -s)
-  - ssh-add <(echo "$REPORTS_SSH_KEY")
 
 build-job:
   tags:
@@ -14,6 +10,8 @@ build-job:
   stage: build
   script:
     - echo build number is $CI_BUILD_REF
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$REPORTS_SSH_KEY")
     - export BUILD_LABEL="`date -I` $CI_BUILD_REF"
     - cd report_accumulator
     - ./gradlew build reports
