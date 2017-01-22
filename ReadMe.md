@@ -31,7 +31,7 @@ In build.gradle:
             jcenter()
         }
         dependencies {
-            classpath 'org.hidetake:gradle-ssh-plugin:2.5.0+'
+            classpath 'org.hidetake:gradle-ssh-plugin:2.7.0+'
             classpath 'edu.odu.cs.zeil:report-accumulator:1.1+'
         }
     }
