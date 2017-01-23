@@ -13,7 +13,7 @@ buildscript {
 		}
 	}
 	dependencies {
-		classpath name: 'report_accumulator'
+		classpath name: 'report_accumulator-1.1'
 		classpath 'org.hidetake:gradle-ssh-plugin:2.7.0+'
 	}
 }
