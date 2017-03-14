@@ -25,14 +25,18 @@ In build.gradle:
 
     apply plugin: 'java'
     apply plugin: 'checkstyle' // and/or pmd, jacoco, findbugs
+    apply plugin: 'org.hidetake.ssh'  // required for deploying reports to remote servers
 
     buildscript {
         repositories {
-            jcenter()
+            jcenter()  // for ssh-plugin
+            ivy { // for report_accumulator
+                url 'https://secweb.cs.odu.edu/~zeil/ivyrepo'
+            }
         }
         dependencies {
             classpath 'org.hidetake:gradle-ssh-plugin:2.7.0+'
-            classpath 'edu.odu.cs.zeil:report-accumulator:1.1+'
+            classpath 'edu.odu.cs.zeil:report_accumulator:1.1+'
         }
     }
     
@@ -41,11 +45,12 @@ In build.gradle:
     
     // ... normal build tasks
     
-    task collectStats (type: ReportStats, dependsOn: 'build') {
+    task collectStats (type: ReportStats, dependsOn: ['build') {
         reportsURL = 'http://project-reports-url'
     }
 
-    task report (type: ReportsDeploy, dependsOn: 'collectStats') {
+    task deployReports (type: ReportsDeploy, dependsOn: 'collectStats') {
+        description 'Deploy reports and statistics to project website'
         deployDestination = '/path-for-copying-to-above-named-website'
         // or
         //deployDestination = 'ssh://yourName@hostAddr:path'
