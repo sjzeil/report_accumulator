@@ -65,6 +65,19 @@ public class JUnitScanner implements ReportScanner {
 					}
 				}
 			}
+			for (File subDir: reportDirectory.toFile().listFiles()) {
+				if (subDir.isDirectory()) {
+					for (File xmlFile: subDir.listFiles()) {
+						if (xmlFile.getName().endsWith(".html")) {
+							double[] result = extractStatistics(xmlFile);
+							if (result != null && result.length > 0) {
+								return result;
+							}
+						}
+					}
+				}
+			}
+
 		}
 		return new double[0];
 	}
