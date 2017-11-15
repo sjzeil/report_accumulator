@@ -60,7 +60,9 @@ public class SpotBugsScanner implements ReportScanner {
 			for (File xmlFile: reportDirectory.toFile().listFiles()) {
 				if (xmlFile.getName().endsWith(".html")) {
 					double[] result = extractStatistics(xmlFile);
+					System.err.println("Checking " + xmlFile.getAbsolutePath());
 					if (result != null && result.length > 0) {
+	                    System.err.println("Found!");
 						return result;
 					}
 				}
