@@ -11,3 +11,8 @@ and appending to CSV files.
 
 Provides Gradle tasks to collect statistics and to deploy
 project reports via ssh/rsync to a web server.
+
+== v1.2 October 15, 2017
+
+Adds support for SpotBugs
+

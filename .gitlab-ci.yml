@@ -6,7 +6,7 @@ stages:
 
 build-job:
   tags:
-    - atria
+    - e-3208
   stage: build
   script:
     - echo build number is $CI_BUILD_REF
