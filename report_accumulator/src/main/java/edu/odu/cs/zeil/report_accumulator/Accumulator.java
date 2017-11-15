@@ -123,8 +123,7 @@ public class Accumulator {
                     if (website.charAt(website.length()-1) != '/') {
                         website = website + '/';
                     }
-                    URL existingReportURL = new URL(projectWebsite.toString() 
-                            + reportName);
+                    URL existingReportURL = new URL(website + reportName);
                     try (BufferedReader in = 
                             new BufferedReader(
                                     new InputStreamReader(
@@ -143,7 +142,7 @@ public class Accumulator {
                 } catch (MalformedURLException e) {
                     existingContent = "";
                 }
-
+                System.err.println("   retrieved: "  + existingContent);
                 if (buildID == null || buildID.trim().length() == 0) {
                     buildID = Integer.toString(lineCount + 1);
                 } else {
