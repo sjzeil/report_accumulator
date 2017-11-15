@@ -110,7 +110,7 @@ class ReportsDeploy extends DefaultTask {
 			rsyncUrl = rsyncUrl + '/'
 		}
 		
-		Path cwd = Paths.get('').toAbsolutePath();
+		Path cwd = project.projectDir.toPath();
 		Path relativeReportsDir = cwd.relativize(reportsDir.toPath())
 		String sourceDir = relativeReportsDir.toString()
 		if (!sourceDir.endsWith('/')) {
