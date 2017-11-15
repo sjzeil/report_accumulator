@@ -12,14 +12,14 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * Report scanner for FindBugs reports.
+ * Report scanner for SpotBugs  reports.
  * Accumulates statistics on number of high and medium priority warnings.
  * 
  * 
  * @author zeil
  *
  */
-public class FindBugsScanner implements ReportScanner {
+public class SpotBugsScanner implements ReportScanner {
 	
 	Path reportDirectory;
 	Document doc;
@@ -79,7 +79,7 @@ public class FindBugsScanner implements ReportScanner {
 					try {
 						Element head = (Element) root.getElementsByTagName("head").item(0);
 						Element title = (Element) head.getElementsByTagName("title").item(0);
-						if (!title.getTextContent().contains("FindBugs Report")) {
+						if (!title.getTextContent().contains("SpotBugs Report")) {
 							return null;
 						}
 						NodeList allTableRows = doc.getElementsByTagName("tr");

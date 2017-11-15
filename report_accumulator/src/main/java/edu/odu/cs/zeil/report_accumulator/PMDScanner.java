@@ -11,7 +11,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 /**
- * Report scanner for Checkstyle reports. Accumulates data on number of warnings issud.
+ * Report scanner for Checkstyle reports. Accumulates data on number of warnings issued.
  * 
  * @author zeil
  *

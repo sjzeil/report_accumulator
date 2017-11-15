@@ -34,7 +34,8 @@ public class Main {
 		accum.register(new JUnitScanner());
 		accum.register(new CheckstyleScanner());
 		accum.register(new FindBugsScanner());
-		accum.register(new PMDScanner());
+		accum.register(new SpotBugsScanner());
+        accum.register(new PMDScanner());
 		accum.register(new JacocoBranchCoverageScanner());
 		
 		accum.accumulateStatistics();

@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TestFindBugsScanner {
+public class TestSpotBugsScanner {
 
 	@Before
 	public void setUp() throws Exception {
@@ -15,7 +15,7 @@ public class TestFindBugsScanner {
 
 	@Test
 	public void testCheckStyle() {
-		FindBugsScanner scanner = new FindBugsScanner();
+		SpotBugsScanner scanner = new SpotBugsScanner();
 		scanner.setDirectory(Paths.get("src", "test", "data", "checkstyle"));
 		assertEquals (2, scanner.getDescriptors().length);
 		assertFalse (scanner.containsReport());
@@ -26,7 +26,7 @@ public class TestFindBugsScanner {
 
 	@Test
 	public void testJUnit() {
-		FindBugsScanner scanner = new FindBugsScanner();
+		SpotBugsScanner scanner = new SpotBugsScanner();
 		scanner.setDirectory(Paths.get("src", "test", "data", "junit"));
 		assertEquals (2, scanner.getDescriptors().length);
 		assertFalse (scanner.containsReport());
@@ -36,35 +36,33 @@ public class TestFindBugsScanner {
 	}
 
 	@Test
-	public void testFindBugs() {
-		FindBugsScanner scanner = new FindBugsScanner();
-		scanner.setDirectory(Paths.get("src", "test", "data", "findbugs"));
+	public void testSpotBugs() {
+		SpotBugsScanner scanner = new SpotBugsScanner();
+		scanner.setDirectory(Paths.get("src", "test", "data", "spotbugs"));
 		assertEquals (2, scanner.getDescriptors().length);
 		assertTrue (scanner.containsReport());
 		double[] stats = scanner.extractStatistics();
 		assertNotNull(stats);
 		assertEquals (2, stats.length);
-		assertEquals (1.0, stats[0], 0.0001);
+		assertEquals (8.0, stats[0], 0.0001);
 		assertEquals (2.0, stats[1], 0.0001);
 	}
 
 	@Test
 	public void testFindBugs2() {
-		FindBugsScanner scanner = new FindBugsScanner();
+		SpotBugsScanner scanner = new SpotBugsScanner();
 		scanner.setDirectory(Paths.get("src", "test", "data", "findbugs2"));
-		assertEquals (2, scanner.getDescriptors().length);
-		assertTrue (scanner.containsReport());
-		double[] stats = scanner.extractStatistics();
-		assertNotNull(stats);
-		assertEquals (2, stats.length);
-		assertEquals (0.0, stats[0], 0.0001);
-		assertEquals (2.0, stats[1], 0.0001);
+        assertEquals (2, scanner.getDescriptors().length);
+        assertFalse (scanner.containsReport());
+        double[] stats = scanner.extractStatistics();
+        assertNotNull(stats);
+        assertEquals (0, stats.length);
 	}
 
     @Test
-    public void testSpotBugs() {
-        FindBugsScanner scanner = new FindBugsScanner();
-        scanner.setDirectory(Paths.get("src", "test", "data", "spotbugs"));
+    public void testFindBugs() {
+        SpotBugsScanner scanner = new SpotBugsScanner();
+        scanner.setDirectory(Paths.get("src", "test", "data", "findbugs"));
         assertEquals (2, scanner.getDescriptors().length);
         assertFalse (scanner.containsReport());
         double[] stats = scanner.extractStatistics();

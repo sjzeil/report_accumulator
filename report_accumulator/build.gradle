@@ -7,10 +7,14 @@
 buildscript {
 	repositories {
 		jcenter()
+		maven {
+           url "https://plugins.gradle.org/m2/"  // for spotbugs
+        }
 	}
 	dependencies {
 		classpath 'org.hidetake:gradle-ssh-plugin:2.7.0+'
 		// classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.1'
+        classpath "gradle.plugin.com.github.spotbugs:gradlePlugin:1.6.0"   
 	}
 }
 
@@ -22,6 +26,7 @@ apply plugin: 'ivy-publish'
 apply plugin: 'project-report'
 apply plugin: 'checkstyle'
 apply plugin: 'findbugs'
+apply plugin: 'com.github.spotbugs'
 apply plugin: 'pmd'
 apply plugin: 'jacoco'
 
@@ -29,7 +34,7 @@ apply plugin: 'jacoco'
 
 
 group = 'edu.odu.cs.zeil'
-version = '1.1'
+version = '1.2'
 // Credentials are loaded from ~/.gradle/gradle.properties
 if(project.hasProperty("ivyRepoUser")){
 	ext.ivyRepoUser = "$ivyRepoUser";
@@ -49,7 +54,7 @@ publishing {
         ivyJava(IvyPublication) {
             organisation 'edu.odu.cs.zeil'
             module project.name
-            revision '1.1'
+            revision '1.2'
             descriptor.status = 'milestone'
             descriptor.branch = 'master'
 
@@ -59,7 +64,7 @@ publishing {
 		mavenJava(MavenPublication) {
             groupId 'edu.odu.cs.zeil'
             artifactId 'report_accumulator'
-            version '1.1'
+            version '1.2'
 			
 			from components.java
 		}
@@ -93,7 +98,7 @@ publishing {
 jar {
 	manifest {
 		attributes 'Implementation-Title': 'Report Accumulator',
-			'Implementation-Version': '1.1'
+			'Implementation-Version': '1.2'
 	}
 	// from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
@@ -110,10 +115,10 @@ bintray {
 		name = 'report_accumulator'
 		
 		version {
-			name = '1.1'
-			desc = 'Gradle/Java Report Statistics Accumulator v1.1'
+			name = '1.2'
+			desc = 'Gradle/Java Report Statistics Accumulator v1.2'
 			released  = new Date()
-			vcsTag = '1.1'
+			vcsTag = '1.2'
 		}
 	}
 }
@@ -151,6 +156,18 @@ findbugsMain {
     }
 }
 
+spotbugsMain {
+    ignoreFailures = true
+    effort = 'max'
+    reportLevel = 'medium'
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
+
+
+
 tasks.withType(Checkstyle) {
   reports {
     html.destination project.file("build/reports/checkstyle/main.html")
@@ -165,6 +182,7 @@ pmd {
 test.ignoreFailures=true
 checkstyleTest.enabled = false
 findbugsTest.enabled = false
+spotbugsTest.enabled = false
 pmdTest.enabled = false
 check.dependsOn jacocoTestReport
 check.dependsOn htmlDependencyReport
