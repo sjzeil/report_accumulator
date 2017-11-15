@@ -119,8 +119,12 @@ public class Accumulator {
                 String existingContent;
                 int lineCount = 0;
                 try {
+                    String website = projectWebsite.toString();
+                    if (website.charAt(website.length()-1) != '/') {
+                        website = website + '/';
+                    }
                     URL existingReportURL = new URL(projectWebsite.toString() 
-                            + "/" + reportName);
+                            + reportName);
                     try (BufferedReader in = 
                             new BufferedReader(
                                     new InputStreamReader(

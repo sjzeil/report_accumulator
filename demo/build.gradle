@@ -40,12 +40,13 @@ task reports (type: Copy, dependsOn: 'build') {
 
 
 task reportStats (type: ReportStats, dependsOn: 'reports') {
-    reportsURL = 'http://www.cs.odu.edu/~zeil/gitlab/reportAccumulator/reports/'
+    reportsURL = 'http://www.cs.odu.edu/~zeil/gitlab/reportAccumulator/reports'
 }
 
 task deployReports (type: ReportsDeploy, dependsOn: 'reportStats') {
 	//deployDestination = '/home/zeil/temp'
-	//deployDestination = 'ssh://zeil@atria.cs.odu.edu:/home/zeil/temp/tmp'
+    //deployDestination = 'ssh://zeil@atria.cs.odu.edu:/home/zeil/temp/'
+	//deployDestination = 'ssh://zeil@atria.cs.odu.edu:/home/zeil/public_html/gitlab/'
 	//deployDestination = 'rsync://zeil@atria.cs.odu.edu:/home/zeil/temp/tmp'
 	deployDestination = 'rsync://zeil@atria.cs.odu.edu:reportAccumulator/reports/'
 }

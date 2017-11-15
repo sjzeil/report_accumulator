@@ -76,6 +76,7 @@ class ReportStats extends DefaultTask {
         accum.register(new JUnitScanner())
         accum.register(new CheckstyleScanner())
         accum.register(new FindBugsScanner())
+        accum.register(new SpotBugsScanner())
         accum.register(new PMDScanner())
         accum.register(new JacocoBranchCoverageScanner())
 
