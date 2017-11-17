@@ -69,7 +69,11 @@ to hold the statistics.
 
 The  `ReportsDeploy` task uploads the contents of the `build/reports`
 directory (including any CSV files created or updated by the `ReportStats`
-task to the web server either by local file copy, ssh, or rsync.
+task) to the web server either by local file copy, ssh, or rsync.  This can be
+used to upload  the `build/reports` directory ocntents even if `ReportStats`
+has not been used.   Simply omit the `ReportsStats` task and make your
+`ReportsDeploy` depend on `build`, `check`, or other tasks that generate
+reports.
 
 * Authentication for ssh & rsync relies, by default, on an already launched
   ssh key agent.  Optionally, a password-free ssh key may be specified.
