@@ -13,16 +13,16 @@ buildscript {
 		}
 	}
 	dependencies {
-		classpath name: 'report_accumulator-1.2'
-		classpath 'org.hidetake:gradle-ssh-plugin:2.7.0+'
+		classpath name: 'report_accumulator-1.3'
 	}
 }
 
-apply plugin: 'org.hidetake.ssh'
 
-
-import edu.odu.cs.zeil.report_accumulator.ReportStats
-import edu.odu.cs.zeil.report_accumulator.ReportsDeploy
+plugins {
+   id 'org.hidetake.ssh' version '2.10.1'
+//   id 'edu.odu.cs.report_accumulator' version '1.3'
+}
+apply plugin: 'edu.odu.cs.report_accumulator' 
 
 
 task build (type: GradleBuild) {
@@ -39,14 +39,10 @@ task reports (type: Copy, dependsOn: 'build') {
 
 
 
-task reportStats (type: ReportStats, dependsOn: 'reports') {
-    reportsURL = 'http://www.cs.odu.edu/~zeil/gitlab/reportAccumulator/reports'
-}
-
-task deployReports (type: ReportsDeploy, dependsOn: 'reportStats') {
+reportStats.reportsURL = 'https://www.cs.odu.edu/~zeil/gitlab/reportAccumulator/reports'
+deployReports.deployDestination = 'rsync://zeil@atria.cs.odu.edu:reportAccumulator/reports/'
 	//deployDestination = '/home/zeil/temp'
     //deployDestination = 'ssh://zeil@atria.cs.odu.edu:/home/zeil/temp/'
 	//deployDestination = 'ssh://zeil@atria.cs.odu.edu:/home/zeil/public_html/gitlab/'
 	//deployDestination = 'rsync://zeil@atria.cs.odu.edu:/home/zeil/temp/tmp'
-	deployDestination = 'rsync://zeil@atria.cs.odu.edu:reportAccumulator/reports/'
-}
+
