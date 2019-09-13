@@ -8,9 +8,6 @@ buildscript {
 	repositories {
 		jcenter()
 		
-		flatDir {
-			dirs rootProject.file('../report_accumulator/build/libs')
-		}
         ivy { // for report_accumulator
             url 'https://secweb.cs.odu.edu/~zeil/ivyrepo'
         }
@@ -23,7 +20,6 @@ buildscript {
 
 
 plugins {
-   id 'org.hidetake.ssh' version '2.10.1'
    id 'edu.odu.cs.report_accumulator' version '1.3'
 }
 //apply plugin: 'edu.odu.cs.report_accumulator' 

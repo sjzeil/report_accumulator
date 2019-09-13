@@ -16,3 +16,11 @@ project reports via ssh/rsync to a web server.
 
 Adds support for SpotBugs
 
+== v1.3 September 13, 2019
+
+Becomes a "true" plugin, supporting the new plugin id style
+
+Automatically adds new tasks reportStats and deployReports to the gradle build
+instead of just delcalring the task types.
+
+ 

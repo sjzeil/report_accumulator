@@ -12,16 +12,16 @@ buildscript {
 
 plugins {
     id 'groovy'
-    id 'java'
+    id 'java-gradle-plugin'
+    id 'ivy-publish'
+    id 'maven-publish'
     id 'pmd'
     id 'checkstyle'
     id 'jacoco'
     id 'com.github.spotbugs' version '2.0.0'
     id 'project-report'
-    id 'ivy-publish'
     id 'org.hidetake.ssh' version '2.10.1'
 }
-
 
 group = 'edu.odu.cs.zeil'
 version = '1.3'
@@ -41,6 +41,7 @@ if(project.hasProperty("ivyRepoPass")){
 
 publishing {
     publications {
+        /*
         ivyJava(IvyPublication) {
             organisation 'edu.odu.cs.zeil'
             module project.name
@@ -50,17 +51,19 @@ publishing {
 
             from components.java
         }
-        /*
-		mavenJava(MavenPublication) {
-            groupId 'edu.odu.cs.zeil'
+        
+		plugin(MavenPublication) {
+            groupId project.group
             artifactId 'report_accumulator'
-            version '1.3'
+            version project.version
 			
 			from components.java
 		}
 		*/
+		
     }
     repositories {
+        
 		ivy {
             name 'ivyRepo'
             url 'sftp://linux.cs.odu.edu:22/home/zeil/secure_html/ivyrepo'
@@ -71,20 +74,31 @@ publishing {
                 password project.ivyRepoPass
             }
         }
+        /*
         maven {
             name 'mavenRepo'
             url 'sftp://linux.cs.odu.edu:22/home/zeil/secure_html/mavenrepo'
-            // Readable via https://www.cs.odu.edu/~zeil/ivyrepo    
+            // Readable via https://www.cs.odu.edu/~zeil/mavenrepo    
             credentials {
                 // Credentials are loaded from ~/.gradle/gradle.properties
                 username "$ivyRepoUser"
                 password "$ivyRepoPass"
             }
         }
+        */
     }           
 }
 
+gradlePlugin {
+    plugins {
+        reportAccumulatorPlugin {
+            id = 'edu.odu.cs.report_accumulator'
+            implementationClass = 'edu.odu.cs.zeil.report_accumulator.ReportAccumulatorPlugin'
+        }
+    }
+}
 
+/*
 jar {
 	manifest {
 		attributes 'Implementation-Title': 'Report Accumulator',
@@ -92,7 +106,7 @@ jar {
 	}
 	// from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
-
+*/
 
 /*
 bintray {
@@ -123,7 +137,7 @@ repositories {
 dependencies {
     compile gradleApi()
     compile localGroovy()
-    compile 'org.hidetake:gradle-ssh-plugin:2.7.0+'
+    compile 'org.hidetake:gradle-ssh-plugin:2.10.1'
     testCompile 'junit:junit:4.12'
 }
 

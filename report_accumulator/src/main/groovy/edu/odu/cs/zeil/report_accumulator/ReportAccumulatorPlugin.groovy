@@ -9,8 +9,7 @@ class ReportAccumulatorPlugin implements Plugin<Project> {
     @Override
     void apply (Project project) {
 
-        //new org.hidetake.gradle.ssh.plugin.SshPlugin().apply(project);
-
+        project.getPluginManager().apply(new org.hidetake.gradle.ssh.plugin.SshPlugin().class)
         project.task ('reportStats', type: edu.odu.cs.zeil.report_accumulator.ReportStats) {
             dependsOn 'reports'
             // reportsURL = 'http://www.cs.odu.edu/~zeil/gitlab/reportAccumulator/reports'
