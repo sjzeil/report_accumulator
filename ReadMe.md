@@ -31,7 +31,7 @@ In settings.gradle:
                 url "https://plugins.gradle.org/m2/"
               }
             ivy { // for report_accumulator
-                url 'https://secweb.cs.odu.edu/~zeil/ivyrepo'
+                url 'https://www.cs.odu.edu/~zeil/ivyrepo'
             }
         }
     }
