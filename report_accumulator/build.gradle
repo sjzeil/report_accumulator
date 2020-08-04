@@ -141,11 +141,16 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
-
+tasks.jar {
+	manifest {
+		attributes('Automatic-Module-Name': 'edu.odu.zeil.report_accumulator')
+	}
+}
 
 
 
 checkstyle {
+	toolVersion "8.1"
     ignoreFailures = true
     showViolations = false    
 }
@@ -188,6 +193,7 @@ pmd {
 
 test.ignoreFailures=true
 checkstyleTest.enabled = false
+checkstyleMain.enabled = false
 //findbugsTest.enabled = false
 spotbugsTest.enabled = false
 pmdTest.enabled = false

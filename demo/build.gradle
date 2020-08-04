@@ -2,27 +2,10 @@
  * Report Accumulator demo
  * Steven J Zeil, Old Dominion Univ.
  */
-
-
-buildscript {
-	repositories {
-		jcenter()
-		
-        ivy { // for report_accumulator
-            url 'https://secweb.cs.odu.edu/~zeil/ivyrepo'
-        }
-
-	}
-	dependencies {
-		//classpath name: 'report_accumulator-1.3'
-	}
-}
-
-
 plugins {
-   id 'edu.odu.cs.report_accumulator' version '1.3'
+	id 'edu.odu.cs.report_accumulator' version '1.3'
 }
-//apply plugin: 'edu.odu.cs.report_accumulator' 
+
 
 
 task build (type: GradleBuild) {
@@ -40,9 +23,9 @@ task reports (type: Copy, dependsOn: 'build') {
 
 
 reportStats.reportsURL = 'https://www.cs.odu.edu/~zeil/gitlab/reportAccumulator/reports'
-deployReports.deployDestination = 'rsync://zeil@atria.cs.odu.edu:reportAccumulator/reports/'
+deployReports.deployDestination = 'rsync://zeil@linux.cs.odu.edu:reportAccumulator/reports/'
 	//deployDestination = '/home/zeil/temp'
-    //deployDestination = 'ssh://zeil@atria.cs.odu.edu:/home/zeil/temp/'
-	//deployDestination = 'ssh://zeil@atria.cs.odu.edu:/home/zeil/public_html/gitlab/'
-	//deployDestination = 'rsync://zeil@atria.cs.odu.edu:/home/zeil/temp/tmp'
+    //deployDestination = 'ssh://zeil@linux.cs.odu.edu:/home/zeil/temp/'
+	//deployDestination = 'ssh://zeil@linux.cs.odu.edu:/home/zeil/public_html/gitlab/'
+	//deployDestination = 'rsync://zeil@linux.cs.odu.edu:/home/zeil/temp/tmp'
 

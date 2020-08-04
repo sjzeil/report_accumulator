@@ -5,3 +5,5 @@
 /bin/
 /gradle-app.setting
 /ui/
+/.idea/
+/.classpath
