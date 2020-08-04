@@ -1,19 +1,9 @@
 pluginManagement {
     repositories {
-        jcenter()
-        maven {
-            url "https://plugins.gradle.org/m2/"
-          }
-        //flatDir {
-        //    dirs '../report_accumulator/build/libs'
-        //}
-        ivy { // for report_accumulator
-            url 'https://secweb.cs.odu.edu/~zeil/ivyrepo'
+        ivy { // Use my own CS dept repo
+            url 'https://www.cs.odu.edu/~zeil/ivyrepo'
         }
-        /*
-        maven { // for report_accumulator
-            url 'https://secweb.cs.odu.edu/~zeil/mavenrepo'
-        }
-        */
+        gradlePluginPortal()
+        mavenCentral()
     }
 }
