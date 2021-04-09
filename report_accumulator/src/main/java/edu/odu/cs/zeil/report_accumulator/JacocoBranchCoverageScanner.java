@@ -75,7 +75,7 @@ public class JacocoBranchCoverageScanner implements ReportScanner {
 						if (attr.isRegularFile()) {
 							File xmlFile = path.toFile();
 							File parent = xmlFile.getParentFile();
-							if (parent.getName().equals("html") && xmlFile.getName().endsWith(".html")) {
+							if (xmlFile.getName().endsWith(".xml")) {
 								double[] result = extractStatistics(xmlFile);
 								if (result != null && result.length > 0) {
 									statistics = result;
@@ -101,7 +101,34 @@ public class JacocoBranchCoverageScanner implements ReportScanner {
 		if (xmlFile.exists()) {
 			if (readDOM(xmlFile)) {
 				Element root = doc.getDocumentElement();
-				if (root.getTagName().equals("html")) {
+				System.err.println("root is a " + root.getTagName());
+				if (root.getTagName().equals("report")) {
+                    try {
+                        NodeList counters = root.getChildNodes();
+                        int numCovered = -1;
+                        int numMissed = -1;
+                        for (int i = 0; i < counters.getLength(); ++i) {
+                            Node nd = counters.item(i);
+                            Element counter = (Element)nd;
+                            if (counter.getTagName().equals("counter")
+                                    && counter.getAttribute("type").equals("BRANCH")) {
+                                numCovered = Integer.parseInt(counter.getAttribute("covered"));
+                                numMissed = Integer.parseInt(counter.getAttribute("missed"));
+                            }
+                        }
+                        if (numCovered < 0 || numMissed < 0) {
+                            return null;
+                        }
+                        
+                        double[] results = new double[2];
+                        results[1] = numMissed;
+                        results[0] = numCovered;
+                        return results;
+                    } catch (Exception e) {
+                        return null;
+                    }
+				}
+				else if (root.getTagName().equals("html")) {
 					try {
 						NodeList allTables = doc.getElementsByTagName("table");
 						int numCovered = -1;

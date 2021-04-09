@@ -37,7 +37,10 @@ if(project.hasProperty("ivyRepoPass")){
 	ext.ivyRepoPass = "password";
 }
 
-
+java {
+    sourceCompatibility = JavaVersion.toVersion(11)
+    targetCompatibility = JavaVersion.toVersion(11)
+}
 
 publishing {
     publications {

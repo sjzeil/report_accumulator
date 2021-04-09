@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE report PUBLIC "-//JACOCO//DTD Report 1.1//EN" "report.dtd">
+<report name="EnrollmentProjection">
+  <sessioninfo id="ip-172-31-83-56-38f6c281" start="1617914150154" dump="1617914189139"/>
+  <package name="edu/odu/cs/cs350">
+    <class name="edu/odu/cs/cs350/Snapshot" sourcefilename="Snapshot.java">
+      <method name="&lt;init&gt;" desc="(Ljava/time/LocalDate;Lorg/apache/commons/collections4/MultiValuedMap;)V" line="28">
+        <counter type="INSTRUCTION" missed="9" covered="0"/>
+        <counter type="LINE" missed="4" covered="0"/>
+        <counter type="COMPLEXITY" missed="1" covered="0"/>
+        <counter type="METHOD" missed="1" covered="0"/>
+      </method>
+      <method name="getDate" desc="()Ljava/time/LocalDate;" line="34">
+        <counter type="INSTRUCTION" missed="0" covered="3"/>
+        <counter type="LINE" missed="0" covered="1"/>
+        <counter type="COMPLEXITY" missed="0" covered="1"/>
+        <counter type="METHOD" missed="0" covered="1"/>
+      </method>
+      <method name="allCourseNames" desc="()Ljava/util/Set;" line="38">
+        <counter type="INSTRUCTION" missed="0" covered="4"/>
+        <counter type="LINE" missed="0" covered="1"/>
+                <counter type="COMPLEXITY" missed="0" covered="1"/>
+        <counter type="METHOD" missed="0" covered="1"/>
+      </method>
+      <method name="allLines" desc="()Ljava/util/Collection;" line="42">
+        <counter type="INSTRUCTION" missed="0" covered="4"/>
+        <counter type="LINE" missed="0" covered="1"/>
+        <counter type="COMPLEXITY" missed="0" covered="1"/>
+        <counter type="METHOD" missed="0" covered="1"/>
+      </method>
+      <method name="lineGroupFor" desc="(Ljava/lang/String;)Ledu/odu/cs/cs350/SnapshotLineGroup;" line="46">
+        <counter type="INSTRUCTION" missed="0" covered="8"/>
+        <counter type="LINE" missed="0" covered="1"/>
+        <counter type="COMPLEXITY" missed="0" covered="1"/>
+        <counter type="METHOD" missed="0" covered="1"/>
+      </method>
+      <method name="mapRelevantLinesByName" desc="(Ljava/util/List;)Lorg/apache/commons/collections4/MultiValuedMap;" line="61">
+        <counter type="INSTRUCTION" missed="0" covered="47"/>
+        <counter type="BRANCH" missed="0" covered="8"/>
+        <counter type="LINE" missed="0" covered="9"/>
+        <counter type="COMPLEXITY" missed="0" covered="5"/>
+        <counter type="METHOD" missed="0" covered="1"/>
+	  </method>
+	</class>
+  </package>
+  <counter type="INSTRUCTION" missed="53" covered="1702"/>
+  <counter type="BRANCH" missed="11" covered="131"/>
+  <counter type="LINE" missed="18" covered="399"/>
+  <counter type="COMPLEXITY" missed="13" covered="137"/>
+  <counter type="METHOD" missed="2" covered="76"/>
+  <counter type="CLASS" missed="0" covered="10"/>
+</report>
+ 
