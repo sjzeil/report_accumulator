@@ -24,7 +24,7 @@ plugins {
 }
 
 group = 'edu.odu.cs.zeil'
-version = '1.3'
+version = '1.4'
 // Credentials are loaded from ~/.gradle/gradle.properties
 if(project.hasProperty("ivyRepoUser")){
 	ext.ivyRepoUser = "$ivyRepoUser";
@@ -48,7 +48,7 @@ publishing {
         ivyJava(IvyPublication) {
             organisation 'edu.odu.cs.zeil'
             module project.name
-            revision '1.3'
+            revision '1.4'
             descriptor.status = 'milestone'
             descriptor.branch = 'master'
 

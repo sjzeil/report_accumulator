@@ -7,6 +7,10 @@ import java.nio.file.Paths;
 import org.junit.Before;
 import org.junit.Test;
 
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
+
 public class TestJacocoBranchCoverageScanner {
 
 	@Before
@@ -55,8 +59,32 @@ public class TestJacocoBranchCoverageScanner {
 		double[] stats = scanner.extractStatistics();
 		assertNotNull(stats);
 		assertEquals (2, stats.length);
-		assertEquals (11.0, stats[0], 0.0001);
-		assertEquals (131.0, stats[1], 0.0001);
+		assertEquals (75.0, stats[0], 0.0001);
+		assertEquals (47.0, stats[1], 0.0001);
 	}
+
+    @Test
+    public void testJacoco2() {
+        JacocoBranchCoverageScanner scanner = new JacocoBranchCoverageScanner();
+        scanner.setDirectory(Paths.get("src", "test", "data", "jacoco2"));
+        assertEquals (2, scanner.getDescriptors().length);
+        assertTrue (scanner.containsReport());
+        double[] stats = scanner.extractStatistics();
+        assertNotNull(stats);
+        assertEquals (2, stats.length);
+        assertEquals (75.0, stats[0], 0.0001);
+        assertEquals (47.0, stats[1], 0.0001);
+    }
+
+
+public static void main(String args[]) 
+{
+    Result result= JUnitCore.runClasses(TestJacocoBranchCoverageScanner.class);
+    for (Failure failure : result.getFailures())
+        {
+                System.out.println(failure.toString());
+        }
+}
+
 
 }

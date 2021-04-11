@@ -44,7 +44,7 @@
 	</class>
   </package>
   <counter type="INSTRUCTION" missed="53" covered="1702"/>
-  <counter type="BRANCH" missed="11" covered="131"/>
+  <counter type="BRANCH" missed="47" covered="75"/>
   <counter type="LINE" missed="18" covered="399"/>
   <counter type="COMPLEXITY" missed="13" covered="137"/>
   <counter type="METHOD" missed="2" covered="76"/>
