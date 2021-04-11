@@ -6,7 +6,7 @@ stages:
 
 build-job:
   tags:
-    - e-3208
+    - ssh-3208
   stage: build
   script:
     - echo build number is $CI_BUILD_REF
