@@ -15,11 +15,5 @@ class ReportAccumulatorPlugin implements Plugin<Project> {
             // reportsURL = 'http://www.cs.odu.edu/~zeil/gitlab/reportAccumulator/reports'
         }
 
-        project.task ('deployReports', type: edu.odu.cs.zeil.report_accumulator.ReportsDeploy) {
-            dependsOn  'reportStats'
-            //deployDestination = '/home/zeil/temp'
-            //deployDestination = 'ssh://zeil@atria.cs.odu.edu:/home/zeil/public_html/gitlab/'
-            // deployDestination = 'rsync://zeil@atria.cs.odu.edu:reportAccumulator/reports/'
-        }
     }
 }

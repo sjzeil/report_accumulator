@@ -2,30 +2,53 @@
  * Report Accumulator demo
  * Steven J Zeil, Old Dominion Univ.
  */
+buildscript {
+	dependencies {
+		classpath "com.github.fracpete:rsync4j-all:3.1.2-15"
+	}
+}
+
 plugins {
-	id 'edu.odu.cs.report_accumulator' version '1.3'
+	id 'edu.odu.cs.report_accumulator' version '1.4'
+}
+
+
+task build () {
 }
 
 
 
-task build (type: GradleBuild) {
-	buildFile = '../report_accumulator/build.gradle'
-	tasks = ['reports']
-}
-
-
-
-task reports (type: Copy, dependsOn: 'build') {
+task reports (type: Copy, dependsOn: ':report_accumulator:reports') {
 	from '../report_accumulator/build/reports'
 	into 'build/reports'
 }
 
 
 
-reportStats.reportsURL = 'https://www.cs.odu.edu/~zeil/gitlab/reportAccumulator/reports'
-deployReports.deployDestination = 'rsync://zeil@linux.cs.odu.edu:reportAccumulator/reports/'
-	//deployDestination = '/home/zeil/temp'
-    //deployDestination = 'ssh://zeil@linux.cs.odu.edu:/home/zeil/temp/'
-	//deployDestination = 'ssh://zeil@linux.cs.odu.edu:/home/zeil/public_html/gitlab/'
-	//deployDestination = 'rsync://zeil@linux.cs.odu.edu:/home/zeil/temp/tmp'
+reportStats {
+	reportsURL = 'https://www.cs.odu.edu/~zeil/gitlab/reportAccumulator/reports'
+	htmlSourceDir = file('src/main/html')
+}
 
+import com.github.fracpete.rsync4j.RSync;
+import com.github.fracpete.processoutput4j.output.ConsoleOutputProcessOutput;
+
+task deployWebsite (dependsOn: "reportStats") {
+	group = 'reporting'
+	description = 'Upload the website (with all reports)'
+    doLast {
+        def sourceDir = "build/reports/";
+        def destURL = "/home/zeil/secure_html/gitlab/reportAccumulator/reports/";
+        RSync rsync = new RSync()
+                .source(sourceDir)
+                .destination(destURL)
+                .recursive(true)
+                .archive(true)
+                .delete(true)
+                .verbose(true);
+                //.rsh("ssh -o IdentitiesOnly=yes");
+        ConsoleOutputProcessOutput output =
+                new ConsoleOutputProcessOutput();
+        output.monitor(rsync.builder());
+    }
+}

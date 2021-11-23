@@ -99,6 +99,7 @@ public class JacocoBranchCoverageScanner implements ReportScanner {
 
 	
 	private double[] extractStatistics(File xmlFile) {
+		if (xmlFile.getName().equals("index.html")) {
 		if (xmlFile.exists()) {
 			if (readDOM(xmlFile)) {
 				Element root = doc.getDocumentElement();
@@ -169,6 +170,7 @@ public class JacocoBranchCoverageScanner implements ReportScanner {
 				}
 			}
 		}
+	    }
 		return null;
 	}
 

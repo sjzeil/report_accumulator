@@ -12,6 +12,7 @@ import org.gradle.api.tasks.Exec
 import org.gradle.api.tasks.Sync
 import org.gradle.api.tasks.bundling.Zip
 import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.*;
 
 
 import org.hidetake.gradle.ssh.plugin.SshPlugin
@@ -26,41 +27,44 @@ class ReportStats extends DefaultTask {
 	 * Where are sources for the reports stored, defaults to
 	 * rootproject/build/reports.
 	 */
+	@InputDirectory
+	@Optional
 	File reportsDir = null
 	
 	/**
 	 * http(s) URL of the location to which these reports are
-	 * being deploy. Specifically, the URL to which the reportsDir
+	 * being deployed. Specifically, the URL to which the reportsDir
 	 * is mapped.  This is used to check for statistics recorded
 	 * from prior builds.
 	 */
+	@Input
 	URL reportsURL = null
 	
 	/**
 	 * Source directory for files to be included in the report,
 	 * typically the overall summary page,
-	 * defaults to src/main/html/reports
+	 * defaults to src/main/html/
 	 */
+	@InputDirectory
+	@Optional
 	File htmlSourceDir = null
 	
-	/**
-	 * Destination directory where contents of htmlSourceDir
-	 * should be placed. 
-	 */
-	String htmlDestDir = 'main'
 	
 	
 	/**
 	 * Identifier for current build. Defaults to a time-stamp
 	 * but can be overridden to match, for example, a git commit ID.
 	 */
+	@Input
+	@Optional
 	String buildID = null
 	
 	ReportStats () {
 		reportsDir = project.file('build/reports')
-		htmlSourceDir = project.file('src/main/html/reports')
+		htmlSourceDir = project.file('src/main/html/')
 		buildID = Instant.now().toString();
 		group = 'reporting'
+		description="Collect summary statistics from analysis tools."
 	}
 	
 	void setReportsURL (String str) {
@@ -75,7 +79,7 @@ class ReportStats extends DefaultTask {
         // accum.register(...);
         accum.register(new JUnitScanner())
         accum.register(new CheckstyleScanner())
-        accum.register(new FindBugsScanner())
+        //accum.register(new FindBugsScanner())
         accum.register(new SpotBugsScanner())
         accum.register(new PMDScanner())
         accum.register(new JacocoBranchCoverageScanner())
@@ -84,7 +88,7 @@ class ReportStats extends DefaultTask {
 		
 		project.copy {
 			from htmlSourceDir
-			into new File(reportsDir, htmlDestDir)
+			into reportsDir
 		}
 	}
 	

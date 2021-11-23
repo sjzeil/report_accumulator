@@ -113,6 +113,7 @@ public class Accumulator {
             final ReportScanner scanner) {
         scanner.setDirectory(dir.toPath());
         if (scanner.containsReport()) {
+            System.err.println("applying " + scanner.toString() + " to " + dir);
             double[] pointStatistics = scanner.extractStatistics();
             if (pointStatistics != null && pointStatistics.length > 0) {
                 String reportName = dir.getName() + ".csv";
@@ -142,7 +143,7 @@ public class Accumulator {
                 } catch (MalformedURLException e) {
                     existingContent = "";
                 }
-                System.err.println("   retrieved: "  + existingContent);
+                System.err.println("   retrieved: "  + reportName);
                 if (buildID == null || buildID.trim().length() == 0) {
                     buildID = Integer.toString(lineCount + 1);
                 } else {
@@ -170,7 +171,7 @@ public class Accumulator {
                     out.write(buildID);
                     for (double stat: pointStatistics) {
                         out.write(",");
-                        out.write(new Double(stat).toString());
+                        out.write(Double.valueOf(stat).toString());
                     }
                     out.newLine();
                 } catch (IOException e) {

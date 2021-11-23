@@ -6,7 +6,8 @@
  
 buildscript {
 	repositories {
-		jcenter()
+        gradlePluginPortal()
+        mavenCentral()
 	}
 }
 
@@ -14,13 +15,12 @@ plugins {
     id 'groovy'
     id 'java-gradle-plugin'
     id 'ivy-publish'
-    id 'maven-publish'
+    //id 'maven-publish'
     id 'pmd'
     id 'checkstyle'
     id 'jacoco'
-    id 'com.github.spotbugs' version '2.0.0'
+    id 'com.github.spotbugs'  version '4.7.10'
     id 'project-report'
-    id 'org.hidetake.ssh' version '2.10.1'
 }
 
 group = 'edu.odu.cs.zeil'
@@ -44,7 +44,6 @@ java {
 
 publishing {
     publications {
-        /*
         ivyJava(IvyPublication) {
             organisation 'edu.odu.cs.zeil'
             module project.name
@@ -54,7 +53,7 @@ publishing {
 
             from components.java
         }
-        
+        /*
 		plugin(MavenPublication) {
             groupId project.group
             artifactId 'report_accumulator'
@@ -62,8 +61,7 @@ publishing {
 			
 			from components.java
 		}
-		*/
-		
+        */
     }
     repositories {
         
@@ -138,10 +136,10 @@ repositories {
 
 // In this section you declare the dependencies for your production and test code
 dependencies {
-    compile gradleApi()
-    compile localGroovy()
-    compile 'org.hidetake:gradle-ssh-plugin:2.10.1'
-    testCompile 'junit:junit:4.12'
+    implementation gradleApi()
+    implementation localGroovy()
+    implementation 'org.hidetake:gradle-ssh-plugin:2.10.1'
+    testImplementation 'junit:junit:4.12'
 }
 
 tasks.jar {
@@ -151,11 +149,17 @@ tasks.jar {
 }
 
 
+checkstyleMain.onlyIf {true}
 
-checkstyle {
-	toolVersion "8.1"
-    ignoreFailures = true
-    showViolations = false    
+tasks.withType(Checkstyle) {
+    reports {
+	    //toolVersion "8.1"
+        ignoreFailures = true
+        //showViolations = false
+        html.required = true
+        configFile = file('config/checkstyle/sun_checks.xml')
+        html.destination project.file("build/reports/checkstyle/main.html")
+    }
 }
 
 /*
@@ -183,12 +187,6 @@ spotbugsMain {
 
 
 
-tasks.withType(Checkstyle) {
-  reports {
-    html.destination project.file("build/reports/checkstyle/main.html")
-  }
-}
-
 pmd {
     ignoreFailures = true
     consoleOutput = false
@@ -214,7 +212,7 @@ task copyDocs (type: Copy) {
     dependsOn 'javadoc'
 }
 
-task reports (dependsOn: ['htmlDependencyReport', 'javadoc', 'check', 'copyWebPages', 'copyDocs']) {
+task reports (dependsOn: ['htmlDependencyReport', 'javadoc', 'check', 'copyWebPages', 'copyDocs', 'checkstyleMain']) {
     description 'Generate all reports for this project'
 }
 

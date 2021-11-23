@@ -72,8 +72,8 @@ public class TestJacocoBranchCoverageScanner {
         double[] stats = scanner.extractStatistics();
         assertNotNull(stats);
         assertEquals (2, stats.length);
-        assertEquals (75.0, stats[0], 0.0001);
-        assertEquals (47.0, stats[1], 0.0001);
+        assertEquals (197.0, stats[0], 0.0001);
+        assertEquals (89.0, stats[1], 0.0001);
     }
 
 
