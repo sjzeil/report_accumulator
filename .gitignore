@@ -2,3 +2,5 @@
 /build/
 *~
 report_accumulator/.project
+**/.settings/
+.project

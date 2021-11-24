@@ -23,4 +23,11 @@ Becomes a "true" plugin, supporting the new plugin id style
 Automatically adds new tasks reportStats and deployReports to the gradle build
 instead of just delcalring the task types.
 
+== v1.4 November 23, 2021
+
+* Updated code for compatibility with Gradle 7.x
+* Dropped the `deployReports` task, as uploading to the website can be better handled by other plugins & tasks.
+* Fixed a bug that prevented finding statistics in Jacoco reports.
+* Dropped support for FindBugs.
+
  
